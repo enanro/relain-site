@@ -1,0 +1,613 @@
+html:has(body.page-template-template-ospt),
+body.page-template-template-ospt {
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+}
+.ospt-compare__sticky { background: #000; }
+.ospt-compare__scene,
+.ospt-compare__soil-labels,
+.ospt-compare__ground-copy,
+.ospt-compare__final-copy,
+.ospt-compare__material { will-change: opacity, transform; }
+
+.ospt-compare__scene {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: left center;
+    pointer-events: none;
+    transform: scale(var(--scene-scale, 1));
+    transform-origin: 42% 53%;
+    opacity: var(--scene-opacity, 1);
+    filter: blur(var(--scene-blur, 0px)) brightness(var(--scene-brightness, 1));
+}
+.ospt-compare__soil-labels {
+    position: absolute;
+    z-index: 4;
+    top: 55%;
+    right: 4%;
+    display: grid;
+    gap: clamp(48px, 11vh, 110px);
+    opacity: var(--labels-opacity, 1);
+    pointer-events: none;
+}
+.ospt-compare__soil-labels span {
+    width: fit-content;
+    padding: 7px 11px;
+    border-left: 2px solid var(--orange);
+    background: rgba(0, 0, 0, .66);
+    color: #f4f5f5;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+.ospt-compare__soil-labels span:last-child { margin-top: 22px; }
+.ospt-compare__mobile-final-visual,
+.ospt-compare__mobile-material,
+.ospt-compare__mobile-cutaway { display: none; }
+
+.ospt-compare__sticky::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: -16vw;
+    width: 82vw;
+    height: 110%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(215, 83, 14, .75) 0, rgba(144, 53, 12, .33) 32%, transparent 68%);
+    opacity: var(--backglow-opacity, 0);
+    transform: translateY(-50%) scale(var(--backglow-scale, .75));
+    pointer-events: none;
+}
+.ospt-compare__cutaway {
+    position: absolute;
+    z-index: 4;
+    top: 50%;
+    left: 0;
+    width: clamp(590px, 52vw, 820px);
+    height: min(66svh, 570px);
+    min-height: 410px;
+    opacity: var(--callout-opacity, 0);
+    transform: translateY(-50%);
+    pointer-events: none;
+    will-change: opacity;
+}
+.ospt-compare__callout {
+    position: absolute;
+    z-index: 1;
+    max-width: 150px;
+    color: #eef0f1;
+    font-size: clamp(11px, .9vw, 13px);
+    font-weight: 700;
+    letter-spacing: .02em;
+    line-height: 1.25;
+    text-shadow: 0 2px 8px #000;
+}
+.ospt-compare__callout[data-layer-target] {
+    border: 0;
+    padding: 2px 0;
+    background: transparent;
+    color: #eef0f1;
+    font: inherit;
+    font-size: clamp(11px, .9vw, 13px);
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+.ospt-compare.is-sequenced[data-active-screen="layers"] .ospt-compare__callout[data-layer-target] { pointer-events: auto; }
+.ospt-compare__callout[data-layer-target]:hover,
+.ospt-compare__callout[data-layer-target]:focus-visible,
+.ospt-compare[data-active-layer="polymer"] .ospt-compare__callout--polymer,
+.ospt-compare[data-active-layer="barrier"] .ospt-compare__callout--barrier,
+.ospt-compare[data-active-layer="adhesive"] .ospt-compare__callout--adhesive { color: #ffae72; }
+.ospt-compare__callout[data-layer-target]:focus-visible,
+.ospt-compare__layer-choice:focus-visible,
+.ospt-compare__detail-back:focus-visible { outline: 2px solid #f77913; outline-offset: 5px; }
+.ospt-compare__callout::after {
+    content: '';
+    position: absolute;
+    top: calc(100% + 7px);
+    left: var(--leader-x, 45%);
+    width: 1px;
+    height: var(--leader-length, 82px);
+    background: linear-gradient(#f77913, rgba(255, 255, 255, .42));
+    transform-origin: top;
+    transform: rotate(var(--leader-angle, 0deg));
+}
+.ospt-compare__callout--polymer { top: 7%; left: 22%; --leader-length: 190px; --leader-angle: -15deg; }
+.ospt-compare__callout--barrier { bottom: 6%; left: 48%; --leader-x: 70%; --leader-length: 220px; --leader-angle: 7deg; }
+.ospt-compare__callout--adhesive { top: 12%; left: 60%; --leader-length: 190px; --leader-angle: -12deg; }
+.ospt-compare__callout--steel { bottom: 6%; left: 80%; --leader-length: 220px; --leader-angle: 7deg; }
+.ospt-compare__callout--barrier::after,
+.ospt-compare__callout--steel::after {
+    top: auto;
+    bottom: calc(100% + 7px);
+    background: linear-gradient(to top, #f77913, rgba(255, 255, 255, .42));
+    transform-origin: bottom;
+}
+.ospt-compare__layers-copy { opacity: 0; }
+.ospt-compare__layers-lead {
+    margin: 20px 0 28px;
+    color: #f5ad7a;
+    font-size: clamp(18px, 1.4vw, 23px);
+    font-weight: 650;
+    line-height: 1.35;
+}
+.ospt-compare__layers-list {
+    max-width: 520px;
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, .22);
+}
+.ospt-compare__layers-list > div {
+    display: grid;
+    grid-template-columns: minmax(150px, 37%) minmax(0, 1fr);
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+    line-height: 1.35;
+}
+.ospt-compare__layers-list dt { color: #f5f6f6; font-size: 13px; font-weight: 700; }
+.ospt-compare__layers-list dd { margin: 0; color: #b9c2c6; font-size: 13px; }
+.ospt-compare__layer-choice {
+    border: 0;
+    padding: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-weight: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+.ospt-compare__layer-choice:hover,
+.ospt-compare__layer-choice:focus-visible { color: #ffae72; }
+.ospt-compare__layers-panel { position: relative; display: grid; min-height: 204px; }
+.ospt-compare__layers-list,
+.ospt-compare__layer-detail { grid-area: 1 / 1; transition: opacity .28s ease, transform .35s ease; }
+.ospt-compare__layer-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 520px;
+    border-top: 1px solid rgba(255, 255, 255, .22);
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+}
+.ospt-compare[data-selected-layer] .ospt-compare__layers-list { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+.ospt-compare[data-selected-layer] .ospt-compare__layer-detail { opacity: 1; transform: none; pointer-events: auto; }
+.ospt-compare__detail-kicker { margin: 0 0 8px; color: #f5ad7a; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.ospt-compare__detail-title { margin: 0 0 10px; color: #f5f6f6; font-size: clamp(19px, 1.5vw, 23px); line-height: 1.25; }
+.ospt-compare__detail-text { margin: 0; color: #c4cbce; font-size: 15px; line-height: 1.5; }
+.ospt-compare__detail-back { margin-top: 17px; border: 0; padding: 3px 0; background: none; color: #ffae72; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.ospt-compare__layers-copy .ospt-compare__link { margin-top: 24px; }
+
+.ospt-compare__ground-lead {
+    max-width: 485px;
+    margin: 25px 0 0;
+    color: #f5ad7a;
+    font-size: clamp(19px, 1.55vw, 25px);
+    font-weight: 650;
+    line-height: 1.35;
+}
+.ospt-compare__ground-description {
+    max-width: 470px;
+    margin: 20px 0 0;
+    color: #c2c9cc;
+    font-size: clamp(15px, 1.05vw, 17px);
+    line-height: 1.58;
+}
+.ospt-compare__ground-copy h2 {
+    font-size: clamp(34px, 2.65vw, 48px);
+    overflow-wrap: normal;
+    white-space: normal;
+}
+
+.ospt-compare.is-sequenced {
+    height: max(2600px, 390svh);
+    overflow: visible;
+    --scene-opacity: 1;
+    --labels-opacity: 1;
+    --scene-blur: 0px;
+    --scene-brightness: 1;
+    --scene-scale: 1;
+    --ground-opacity: 1;
+    --final-opacity: 0;
+    --pile-x: 70px;
+    --pile-y: 172px;
+    --pile-angle: 32deg;
+    --pile-scale: .62;
+    --glow-opacity: 0;
+    --glow-scale: 1.12;
+    --layers-art-opacity: 0;
+    --backglow-opacity: 0;
+    --backglow-scale: .75;
+    --callout-opacity: 0;
+}
+.ospt-compare.is-sequenced .ospt-compare__sticky {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 620px;
+    overflow: hidden;
+}
+.ospt-compare.is-sequenced .ospt-compare__inner {
+    height: 100%;
+    min-height: 0;
+}
+.ospt-compare.is-sequenced .ospt-compare__visual {
+    height: 100%;
+    overflow: visible;
+    isolation: isolate;
+}
+.ospt-compare.is-sequenced[data-layers-transition="true"] .ospt-compare__visual {
+    clip-path: inset(-100vh 0 -100vh -100vw);
+}
+.ospt-compare.is-sequenced[data-layers-transition="true"] .ospt-compare__visual::after {
+    content: '';
+    position: absolute;
+    z-index: 6;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 72px;
+    background: linear-gradient(to right, transparent, #000);
+    pointer-events: none;
+}
+.ospt-compare.is-sequenced .ospt-compare__model {
+    z-index: 3;
+    top: 4%;
+    height: 84%;
+    transform: translate3d(var(--pile-x), var(--pile-y), 0) rotateZ(var(--pile-angle)) rotateY(-9deg) rotateX(5deg) rotateZ(0deg) scale(var(--pile-scale));
+    transition: none;
+}
+.ospt-compare.is-sequenced[data-sequence-complete="true"] .ospt-compare__model { transition: transform .8s cubic-bezier(.36, .02, .21, 1); }
+.ospt-compare.is-sequenced[data-layers-transition="true"] .ospt-compare__model { transition: none; }
+.ospt-compare.is-sequenced .ospt-compare__glow {
+    opacity: var(--glow-opacity);
+    transform: scale(var(--glow-scale, 1.12));
+}
+.ospt-compare__layer-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: scale(.82);
+    opacity: var(--layers-art-opacity, 0);
+    pointer-events: none;
+}
+.ospt-compare.is-sequenced[data-active-screen="layers"] .ospt-compare__model.is-layer-hot { cursor: pointer; }
+.ospt-compare__polymer-window,
+.ospt-compare__barrier-window,
+.ospt-compare__barrier-body,
+.ospt-compare__barrier-highlight,
+.ospt-compare__adhesive-window,
+.ospt-compare__adhesive-body,
+.ospt-compare__adhesive-highlight {
+    transition: width .42s cubic-bezier(.22, .7, .24, 1);
+}
+.ospt-compare.is-sequenced[data-active-screen="layers"] .ospt-compare__polymer-window,
+.ospt-compare.is-linear .ospt-compare__polymer-window { width: 25px; }
+.ospt-compare.is-sequenced[data-active-screen="layers"][data-active-layer="polymer"] .ospt-compare__polymer-window,
+.ospt-compare.is-linear[data-active-layer="polymer"] .ospt-compare__polymer-window { width: 285px; }
+.ospt-compare[data-active-layer="barrier"] .ospt-compare__barrier-window,
+.ospt-compare[data-active-layer="barrier"] .ospt-compare__barrier-body { width: 260px; }
+.ospt-compare[data-active-layer="barrier"] .ospt-compare__barrier-highlight { width: 248px; }
+.ospt-compare[data-active-layer="adhesive"] .ospt-compare__adhesive-window,
+.ospt-compare[data-active-layer="adhesive"] .ospt-compare__adhesive-body { width: 191px; }
+.ospt-compare[data-active-layer="adhesive"] .ospt-compare__adhesive-highlight { width: 179px; }
+
+.ospt-compare__polymer-focus {
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+}
+.ospt-compare__polymer-canvas { display: block; width: 100%; height: 100%; }
+.ospt-compare__barrier-focus,
+.ospt-compare__adhesive-focus {
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+}
+.ospt-compare__barrier-canvas, .ospt-compare__adhesive-canvas { display: block; width: 100%; height: 100%; }
+.ospt-compare.is-sequenced[data-polymer-phase="cover"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-polymer-phase="turn"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-polymer-phase="end"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-polymer-phase="unroll"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-polymer-phase="water"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-polymer-phase="water-out"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-polymer-phase="reroll"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-polymer-phase="end-back"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-polymer-phase="turn-back"] .ospt-compare__cutaway {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+}
+.ospt-compare.is-sequenced[data-polymer-phase="turn"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-polymer-phase="end"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-polymer-phase="unroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-polymer-phase="water"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-polymer-phase="water-out"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-polymer-phase="reroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-polymer-phase="end-back"] .ospt-compare__model {
+    transform: translate3d(var(--pile-x), var(--pile-y), 0) rotateZ(var(--pile-angle)) rotateY(90deg) rotateX(0deg) rotateZ(-59.5deg) scale(var(--pile-scale));
+    transition: transform .9s cubic-bezier(.22, .7, .2, 1), opacity .18s ease;
+}
+.ospt-compare.is-sequenced[data-polymer-phase="end"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-polymer-phase="unroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-polymer-phase="water"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-polymer-phase="water-out"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-polymer-phase="reroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-polymer-phase="end-back"] .ospt-compare__model { opacity: 0; pointer-events: none; }
+.ospt-compare.is-sequenced[data-polymer-phase="turn-back"] .ospt-compare__model {
+    transform: translate3d(var(--pile-x), var(--pile-y), 0) rotateZ(var(--pile-angle)) rotateY(-9deg) rotateX(5deg) rotateZ(0deg) scale(var(--pile-scale));
+    opacity: 1;
+    transition: transform .9s cubic-bezier(.22, .7, .2, 1), opacity .5s ease .16s;
+}
+.ospt-compare[data-polymer-phase="turn"] .ospt-compare__polymer-focus,
+.ospt-compare[data-polymer-phase="end"] .ospt-compare__polymer-focus,
+.ospt-compare[data-polymer-phase="unroll"] .ospt-compare__polymer-focus,
+.ospt-compare[data-polymer-phase="water"] .ospt-compare__polymer-focus,
+.ospt-compare[data-polymer-phase="water-out"] .ospt-compare__polymer-focus,
+.ospt-compare[data-polymer-phase="reroll"] .ospt-compare__polymer-focus,
+.ospt-compare[data-polymer-phase="end-back"] .ospt-compare__polymer-focus,
+.ospt-compare[data-polymer-phase="turn-back"] .ospt-compare__polymer-focus { opacity: 1; }
+
+.ospt-compare.is-sequenced[data-barrier-phase="cover"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-barrier-phase="turn"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-barrier-phase="end"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-barrier-phase="unroll"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-barrier-phase="separate"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-barrier-phase="molecules"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-barrier-phase="molecules-out"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-barrier-phase="cover-return"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-barrier-phase="reroll"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-barrier-phase="end-back"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-barrier-phase="turn-back"] .ospt-compare__cutaway {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+}
+.ospt-compare.is-sequenced[data-barrier-phase="turn"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="end"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="unroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="separate"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="molecules"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="molecules-out"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="cover-return"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="reroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="end-back"] .ospt-compare__model {
+    transform: translate3d(var(--pile-x), var(--pile-y), 0) rotateZ(var(--pile-angle)) rotateY(90deg) rotateX(0deg) rotateZ(-59.5deg) scale(var(--pile-scale));
+    transition: transform .9s cubic-bezier(.22, .7, .2, 1), opacity .18s ease;
+}
+.ospt-compare.is-sequenced[data-barrier-phase="end"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="unroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="separate"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="molecules"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="molecules-out"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="cover-return"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="reroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-barrier-phase="end-back"] .ospt-compare__model { opacity: 0; pointer-events: none; }
+.ospt-compare.is-sequenced[data-barrier-phase="turn-back"] .ospt-compare__model {
+    transform: translate3d(var(--pile-x), var(--pile-y), 0) rotateZ(var(--pile-angle)) rotateY(-9deg) rotateX(5deg) rotateZ(0deg) scale(var(--pile-scale));
+    opacity: 1;
+    transition: transform .9s cubic-bezier(.22, .7, .2, 1), opacity .5s ease .16s;
+}
+.ospt-compare[data-barrier-phase="turn"] .ospt-compare__barrier-focus,
+.ospt-compare[data-barrier-phase="end"] .ospt-compare__barrier-focus,
+.ospt-compare[data-barrier-phase="unroll"] .ospt-compare__barrier-focus,
+.ospt-compare[data-barrier-phase="separate"] .ospt-compare__barrier-focus,
+.ospt-compare[data-barrier-phase="molecules"] .ospt-compare__barrier-focus,
+.ospt-compare[data-barrier-phase="molecules-out"] .ospt-compare__barrier-focus,
+.ospt-compare[data-barrier-phase="cover-return"] .ospt-compare__barrier-focus,
+.ospt-compare[data-barrier-phase="reroll"] .ospt-compare__barrier-focus,
+.ospt-compare[data-barrier-phase="end-back"] .ospt-compare__barrier-focus,
+.ospt-compare[data-barrier-phase="turn-back"] .ospt-compare__barrier-focus { opacity: 1; }
+.ospt-compare.is-sequenced[data-adhesive-phase="cover"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-adhesive-phase="turn"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-adhesive-phase="end"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-adhesive-phase="unroll"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-adhesive-phase="separate"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-adhesive-phase="molecules"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-adhesive-phase="molecules-out"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-adhesive-phase="cover-return"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-adhesive-phase="reroll"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-adhesive-phase="end-back"] .ospt-compare__cutaway,
+.ospt-compare.is-sequenced[data-adhesive-phase="turn-back"] .ospt-compare__cutaway {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+}
+.ospt-compare.is-sequenced[data-adhesive-phase="turn"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="end"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="unroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="separate"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="molecules"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="molecules-out"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="cover-return"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="reroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="end-back"] .ospt-compare__model {
+    transform: translate3d(var(--pile-x), var(--pile-y), 0) rotateZ(var(--pile-angle)) rotateY(90deg) rotateX(0deg) rotateZ(-59.5deg) scale(var(--pile-scale));
+    transition: transform .9s cubic-bezier(.22, .7, .2, 1), opacity .18s ease;
+}
+.ospt-compare.is-sequenced[data-adhesive-phase="end"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="unroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="separate"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="molecules"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="molecules-out"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="cover-return"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="reroll"] .ospt-compare__model,
+.ospt-compare.is-sequenced[data-adhesive-phase="end-back"] .ospt-compare__model { opacity: 0; pointer-events: none; }
+.ospt-compare.is-sequenced[data-adhesive-phase="turn-back"] .ospt-compare__model {
+    transform: translate3d(var(--pile-x), var(--pile-y), 0) rotateZ(var(--pile-angle)) rotateY(-9deg) rotateX(5deg) rotateZ(0deg) scale(var(--pile-scale));
+    opacity: 1;
+    transition: transform .9s cubic-bezier(.22, .7, .2, 1), opacity .5s ease .16s;
+}
+.ospt-compare[data-adhesive-phase="turn"] .ospt-compare__adhesive-focus,
+.ospt-compare[data-adhesive-phase="end"] .ospt-compare__adhesive-focus,
+.ospt-compare[data-adhesive-phase="unroll"] .ospt-compare__adhesive-focus,
+.ospt-compare[data-adhesive-phase="separate"] .ospt-compare__adhesive-focus,
+.ospt-compare[data-adhesive-phase="molecules"] .ospt-compare__adhesive-focus,
+.ospt-compare[data-adhesive-phase="molecules-out"] .ospt-compare__adhesive-focus,
+.ospt-compare[data-adhesive-phase="cover-return"] .ospt-compare__adhesive-focus,
+.ospt-compare[data-adhesive-phase="reroll"] .ospt-compare__adhesive-focus,
+.ospt-compare[data-adhesive-phase="end-back"] .ospt-compare__adhesive-focus,
+.ospt-compare[data-adhesive-phase="turn-back"] .ospt-compare__adhesive-focus { opacity: 1; }
+.ospt-compare.is-sequenced[data-state="bare"][data-layers-transition="true"] .ospt-compare__pile--coated { opacity: 1; transform: scale(.82); }
+.ospt-compare.is-sequenced[data-state="bare"][data-layers-transition="true"] .ospt-compare__pile--bare { opacity: 0; }
+.ospt-compare.is-sequenced .ospt-compare__material {
+    z-index: 5;
+    opacity: var(--final-opacity);
+    pointer-events: none;
+}
+.ospt-compare.is-sequenced .ospt-compare__content {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    align-items: center;
+    padding: 20px 0;
+}
+.ospt-compare.is-sequenced .ospt-compare__ground-copy,
+.ospt-compare.is-sequenced .ospt-compare__final-copy,
+.ospt-compare.is-sequenced .ospt-compare__layers-copy { grid-area: 1 / 1; }
+.ospt-compare.is-sequenced .ospt-compare__ground-copy {
+    opacity: var(--ground-opacity);
+    transform: translateY(var(--ground-y, 0px));
+    pointer-events: none;
+}
+.ospt-compare.is-sequenced .ospt-compare__final-copy {
+    opacity: var(--final-opacity);
+    transform: translateY(var(--final-y, 24px));
+    pointer-events: none;
+}
+.ospt-compare.is-sequenced .ospt-compare__layers-copy {
+    opacity: var(--layers-opacity, 0);
+    transform: translateY(var(--layers-y, 24px));
+    pointer-events: none;
+}
+.ospt-compare.is-sequenced[data-active-screen="middle"] .ospt-compare__final-copy,
+.ospt-compare.is-sequenced[data-active-screen="layers"] .ospt-compare__layers-copy { pointer-events: auto; }
+.ospt-compare.is-sequenced[data-state="bare"][data-sequence-complete="false"] .ospt-compare__pile--coated { opacity: 1; transform: scale(.82); }
+.ospt-compare.is-sequenced[data-state="bare"][data-sequence-complete="false"] .ospt-compare__pile--bare { opacity: 0; }
+
+@media (max-width: 900px), (prefers-reduced-motion: reduce) {
+    .ospt-compare.is-linear { height: auto; overflow: hidden; }
+    .ospt-compare.is-linear .ospt-compare__sticky { position: relative; height: auto; overflow: hidden; }
+    .ospt-compare.is-linear .ospt-compare__sticky::before { display: none; }
+    .ospt-compare.is-linear .ospt-compare__cutaway { display: none; }
+    .ospt-compare.is-linear .ospt-compare__layer-art { display: none; }
+    .ospt-compare.is-linear .ospt-compare__inner {
+        width: min(760px, calc(100% - 40px));
+        height: auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 38px 0 70px;
+    }
+    .ospt-compare.is-linear .ospt-compare__visual {
+        width: 100%;
+        height: clamp(380px, 68vw, 560px);
+        overflow: hidden;
+        flex: none;
+    }
+    .ospt-compare.is-linear .ospt-compare__model {
+        position: absolute;
+        z-index: 3;
+        top: 3%;
+        height: 88%;
+        transform: translate3d(-3%, 19%, 0) rotateZ(32deg) scale(.7);
+        transition: none;
+    }
+    .ospt-compare.is-linear .ospt-compare__glow,
+    .ospt-compare.is-linear .ospt-compare__material { display: none; }
+    .ospt-compare.is-linear .ospt-compare__soil-labels { right: 3%; gap: 44px; }
+    .ospt-compare.is-linear .ospt-compare__content { display: block; width: 100%; padding: 30px 0 0; }
+    .ospt-compare.is-linear .ospt-compare__ground-copy,
+    .ospt-compare.is-linear .ospt-compare__final-copy,
+    .ospt-compare.is-linear .ospt-compare__layers-copy { opacity: 1; transform: none; pointer-events: auto; }
+    .ospt-compare.is-linear .ospt-compare__final-copy { margin-top: 70px; }
+    .ospt-compare.is-linear .ospt-compare__layers-copy { margin-top: 78px; }
+    .ospt-compare.is-linear .ospt-compare__mobile-cutaway {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: clamp(280px, 55vw, 430px);
+        margin-bottom: 35px;
+        overflow: hidden;
+    }
+    .ospt-compare.is-linear .ospt-compare__mobile-layer-model {
+        position: absolute;
+        inset: -34% -10%;
+        transform: rotate(-55deg) scale(.82);
+    }
+    .ospt-compare.is-linear .ospt-compare__mobile-layer-model img,
+    .ospt-compare.is-linear .ospt-compare__mobile-layer-model svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .ospt-compare.is-linear .ospt-compare__mobile-final-visual {
+        position: relative;
+        display: block;
+        height: clamp(320px, 75vw, 520px);
+        margin-bottom: 35px;
+        overflow: hidden;
+    }
+    .ospt-compare.is-linear .ospt-compare__mobile-final-visual img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .ospt-compare.is-linear .ospt-compare__mobile-glow { filter: blur(45px); transform: scale(1.14); }
+    .ospt-compare.is-linear .ospt-compare__mobile-pile--coated { opacity: 1; transform: scale(.82); }
+    .ospt-compare.is-linear .ospt-compare__mobile-pile--bare { opacity: 0; transform: scale(.82) rotate(90deg); }
+    .ospt-compare.is-linear[data-state="bare"] .ospt-compare__mobile-pile--coated { opacity: 0; }
+    .ospt-compare.is-linear[data-state="bare"] .ospt-compare__mobile-pile--bare { opacity: 1; transform: scale(.9) rotate(60deg); }
+    .ospt-compare.is-linear .ospt-compare__mobile-material { display: block; margin-top: 42px; padding-left: 17px; border-left: 2px solid #9ca9ae; }
+    .ospt-compare.is-linear .ospt-compare__mobile-material p { margin: 0; color: #c7ced1; font-size: 13px; line-height: 1.55; }
+}
+
+@media (max-width: 560px) {
+    .ospt-compare.is-linear .ospt-compare__inner { padding: 22px 0 58px; }
+    .ospt-compare.is-linear .ospt-compare__visual { height: 360px; }
+    .ospt-compare.is-linear .ospt-compare__model { transform: translate3d(-3%, 21%, 0) rotateZ(32deg) scale(.7); }
+    .ospt-compare.is-linear .ospt-compare__soil-labels span { font-size: 8px; }
+    .ospt-compare.is-linear .ospt-compare__ground-copy h2 { font-size: clamp(36px, 10vw, 48px); }
+    .ospt-compare.is-linear .ospt-compare__ground-lead { font-size: 19px; }
+    .ospt-compare.is-linear .ospt-compare__ground-description { font-size: 15px; }
+    .ospt-compare.is-linear .ospt-compare__final-copy { margin-top: 58px; }
+    .ospt-compare.is-linear .ospt-compare__layers-copy { margin-top: 64px; }
+    .ospt-compare__layers-list > div { grid-template-columns: 1fr; gap: 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ospt-compare__polymer-window,
+    .ospt-compare__barrier-window,
+    .ospt-compare__barrier-body,
+    .ospt-compare__barrier-highlight,
+    .ospt-compare__adhesive-window,
+    .ospt-compare__adhesive-body,
+    .ospt-compare__adhesive-highlight,
+    .ospt-compare__layers-list,
+    .ospt-compare__layer-detail { transition-duration: .01ms; }
+    .ospt-compare__drop { animation: none; }
+}
+

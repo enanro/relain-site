@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Релайн — локальный просмотр</title>
+<meta name='robots' content='noindex, nofollow' />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://enanro.github.io/relain-site/wp-json/oembed/1.0/embed?url=http%3A%2F%2F127.0.0.1%3A8086%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://enanro.github.io/relain-site/wp-json/oembed/1.0/embed?url=http%3A%2F%2F127.0.0.1%3A8086%2F&#038;format=xml" />
+<link rel="preload" href="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/fonts/Bebas Neue/BebasNeueBold.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/fonts/Manrope/Manrope-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/logo-mayak.svg" as="image"><style id="wp-img-auto-sizes-contain-inline-css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id="wp-emoji-styles-inline-css">
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+/*# sourceURL=wp-emoji-styles-inline-css */
+</style>
+<style id="wp-block-library-inline-css">
+:root{--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color);--wp-editor-canvas-background:#ddd;--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,160.5;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}:root .has-text-align-center{text-align:center}:root .has-text-align-left{text-align:left}:root .has-text-align-right{text-align:right}.has-fit-text{white-space:nowrap!important}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{word-wrap:normal!important;border:0;clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;word-break:normal!important}.screen-reader-text:focus{background-color:#ddd;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style^=border-color],[style*=";border-color"],[style*="; border-color"]){border-style:solid}html :where([style^=border-top-color],[style*=";border-top-color"],[style*="; border-top-color"]){border-top-style:solid}html :where([style^=border-right-color],[style*=";border-right-color"],[style*="; border-right-color"]){border-right-style:solid}html :where([style^=border-bottom-color],[style*=";border-bottom-color"],[style*="; border-bottom-color"]){border-bottom-style:solid}html :where([style^=border-left-color],[style*=";border-left-color"],[style*="; border-left-color"]){border-left-style:solid}html :where([style^=border-width],[style*=";border-width"],[style*="; border-width"]){border-style:solid}html :where([style^=border-top-width],[style*=";border-top-width"],[style*="; border-top-width"]){border-top-style:solid}html :where([style^=border-right-width],[style*=";border-right-width"],[style*="; border-right-width"]){border-right-style:solid}html :where([style^=border-bottom-width],[style*=";border-bottom-width"],[style*="; border-bottom-width"]){border-bottom-style:solid}html :where([style^=border-left-width],[style*=";border-left-width"],[style*="; border-left-width"]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
+
+/*# sourceURL=/wp-includes/css/dist/block-library/common.min.css */
+</style>
+<style id="classic-theme-styles-inline-css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+
+<style id="global-styles-inline-css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}.wp-block-button{--wp--preset--dimension--25: 25%;--wp--preset--dimension--50: 50%;--wp--preset--dimension--75: 75%;--wp--preset--dimension--100: 100%;}:where(body) { margin: 0; }:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+<link rel='stylesheet' id='contact-form-7-css' href='https://enanro.github.io/relain-site/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=6.1.7' media='all' />
+<link rel='stylesheet' id='reline-fonts-css' href='https://enanro.github.io/relain-site/wp-content/themes/reline/assets/css/fonts.css?ver=1.0.5' media='all' />
+<link rel='stylesheet' id='reline-system-css' href='https://enanro.github.io/relain-site/wp-content/themes/reline/assets/css/site-system.css?ver=1.0.5' media='all' />
+<link rel='stylesheet' id='reline-home-css' href='https://enanro.github.io/relain-site/wp-content/themes/reline/assets/css/page-home.css?ver=1.0.5' media='all' />
+<link rel='stylesheet' id='reline-mobile-css' href='https://enanro.github.io/relain-site/wp-content/themes/reline/assets/css/mobile.css?ver=1.0.5' media='all' />
+<link rel='stylesheet' id='reline-fix-css' href='https://enanro.github.io/relain-site/wp-content/themes/reline/assets/css/css-fix.css?ver=1.0.5' media='all' />
+<link rel='stylesheet' id='reline-header-modern-css' href='https://enanro.github.io/relain-site/wp-content/themes/reline/assets/css/header-modern.css?ver=1.0.5' media='all' />
+<link rel="https://api.w.org/" href="https://enanro.github.io/relain-site/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://enanro.github.io/relain-site/wp-json/wp/v2/pages/4" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://enanro.github.io/relain-site/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 7.1.2" />
+<link rel="canonical" href="https://enanro.github.io/relain-site/" />
+<link rel='shortlink' href='https://enanro.github.io/relain-site/' />
+</head>
+
+<body class="home wp-singular page-template page-template-templates page-template-template-home page-template-templatestemplate-home-php page page-id-4 wp-theme-reline">
+        
+
+    <header class="site-header site-header--modern" id="top">
+        <div class="header-main">
+            <div class="container header-main__inner">
+                <a aria-label="УЗПТ Маяк" class="logo" href="https://enanro.github.io/relain-site/">
+                    <img alt="Релайн — локальный просмотр"
+                        src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/logo-mayak-header.svg"
+                        width="200" height="60">
+                </a>
+
+                <nav aria-label="Основное меню" class="site-nav" id="site-nav">
+                    <ul class="site-nav__list">
+                                                                <li>
+                                            <a href="https://enanro.github.io/relain-site/products/" >
+                                                Продукция                                            </a>
+                                            </li>
+                                                                    <li>
+                                            <a href="https://enanro.github.io/relain-site/about/" >
+                                                О компании                                            </a>
+                                            </li>
+                                                                    <li>
+                                            <a href="https://enanro.github.io/relain-site/contacts/" >
+                                                Контакты                                            </a>
+                                            </li>
+                                                                    <li>
+                                            <a href="https://enanro.github.io/relain-site/calculator/" >
+                                                Калькулятор                                            </a>
+                                            </li>
+                                                </ul>
+                </nav>
+                <div class="header-actions">
+                    <details class="header-search">
+                        <summary class="header-icon" aria-label="Поиск по сайту" title="Поиск по сайту">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/relain-site/><path d="m16 16 5 5"/relain-site/></svg>
+                        </summary>
+                        <form class="header-search__form" role="search" method="get" action="https://enanro.github.io/relain-site/">
+                            <label for="header-search-input">Поиск по сайту</label>
+                            <div><input id="header-search-input" type="search" name="s" placeholder="Что найти?" required><button type="submit">Найти</button></div>
+                        </form>
+                    </details>
+                                                            <button class="header-icon header-icon--accent header-main__cta" data-modal-open="" type="button" aria-label="Заказать обратный звонок" title="Заказать обратный звонок">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.3 3.5 9 3l2 4.1-1.7 2a15.2 15.2 0 0 0 5.6 5.6l2-1.7 4.1 2-.5 2.7a3 3 0 0 1-3.3 2.4A17.5 17.5 0 0 1 3.9 6.8a3 3 0 0 1 2.4-3.3Z"/relain-site/></svg>
+                    </button>
+                    <button aria-controls="site-nav" aria-expanded="false" aria-label="Открыть меню" class="burger header-icon" type="button">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+<section class="hero section-dark" id="about">
+    <div class="container hero__inner">
+        <div class="hero__content">
+            <article class="hero-card dark-card">
+                <h1>Защита свай от морозного пучения на <span class="heading-num">50</span> лет</h1>
+                <p>Противопучинные покрытия «<strong>Релайн</strong>» — технологичная альтернатива устаревшим лакокрасочным решениям. Работают <strong>в условиях вечной мерзлоты и сезонного промерзания</strong> без потери эффективности.</p>
+                <div class="hero-card__actions">
+                    <button class="btn btn--orange" data-modal-open="" type="button">Получить техрешение под объект</button>
+                    <button class="btn btn--outline-dark" data-modal-open="" type="button">Скачать комплект документации</button>
+                </div>
+            </article>
+            <div aria-label="Ключевые преимущества" class="hero-benefits">
+                <article class="mini-card dark-card">
+                    <img alt="Иконка покрытия Релайн"
+                        src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-1.webp"
+                        width="48" height="48">
+                    <p>Покрытия «Релайн» — работа <strong>при -60°C</strong></p>
+                </article>
+                <article class="mini-card dark-card">
+                    <img alt="Иконка снижения сил пучения"
+                        src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-2.webp"
+                        width="48" height="48">
+                    <p>Снижение сил пучения <strong>до 80%</strong></p>
+                </article>
+                <article class="mini-card dark-card">
+                    <img alt="Иконка сокращения затрат"
+                        src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-3.webp"
+                        width="48" height="48">
+                    <p>Сокращение затрат на проект <strong>до 40%</strong></p>
+                </article>
+            </div>
+        </div>
+        <div class="hero__visual">
+            <img alt="Трубопровод на сваях с противопучинной защитой"
+                src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/slide-pipeline.webp"
+                class="hero__image js-hero-image"
+                width="700" height="500">
+        </div>
+        <div aria-label="Слайдер изображений первого экрана" class="hero-slider">
+            <button aria-label="Предыдущее изображение" class="slider-arrow slider-arrow--prev" type="button">‹</button>
+                            <button aria-label="Трубопровод на сваях с противопучинной защитой"
+                    class="slider-dot slider-dot--active"
+                    data-slide="0"
+                    data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/slide-pipeline.webp"
+                    data-alt="Трубопровод на сваях с противопучинной защитой"
+                    type="button"
+                    aria-current="true"></button>
+                            <button aria-label="Модульное здание на свайном основании"
+                    class="slider-dot"
+                    data-slide="1"
+                    data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/slide-module.webp"
+                    data-alt="Модульное здание на свайном основании"
+                    type="button"
+                    ></button>
+                            <button aria-label="Железнодорожная инфраструктура на сваях"
+                    class="slider-dot"
+                    data-slide="2"
+                    data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/slide-train.webp"
+                    data-alt="Железнодорожная инфраструктура на сваях"
+                    type="button"
+                    ></button>
+                        <button aria-label="Следующее изображение" class="slider-arrow slider-arrow--next" type="button">›</button>
+        </div>
+    </div>
+</section><section class="frost section-light section" id="risks">
+    <div class="container">
+        <div class="section-head section-head--center">
+            <h2>Морозное пучение повышает<br>риски и стоимость проекта</h2>
+            <p>Морозное пучение повреждает свайные конструкции, усложняет строительство и увеличивает затраты. Чтобы компенсировать нагрузки, часто приходится увеличивать длину свай, а это ведёт к удорожанию монтажа, логистики и эксплуатации.</p>
+        </div>
+        <div class="frost-grid">
+            <article class="frost-card frost-card--wide white-card">
+                <div class="card-title-row">
+                    <h3>Морозное пучение</h3>
+                    <img alt="Иконка морозного пучения"
+                        data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-4.webp"
+                        class="lazy" width="48" height="48">
+                </div>
+                <div class="frost-card__image-wrap">
+                    <video class="frost-card__animation" autoplay muted loop playsinline preload="auto"
+                        aria-label="Анимация морозного пучения сваи">
+                        <source src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/video/frost-heave.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <button class="btn btn--orange" data-modal-open="" type="button">Как работает эффект морозного пучения</button>
+            </article>
+            <article class="frost-card white-card">
+                <div class="card-title-row">
+                    <h3>Проект дорожает</h3>
+                    <img alt="Иконка роста стоимости проекта"
+                        data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-8.webp"
+                        class="lazy" width="48" height="48">
+                </div>
+                <div class="cost-list">
+                    <div class="cost-item">
+                        <img alt="Иконка монтажа"
+                            data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-5.webp"
+                            class="lazy" width="40" height="40">
+                        <div><strong>Монтаж</strong><span>Больше работ и времени</span></div>
+                        <span class="up-arrow">↑</span>
+                    </div>
+                    <div class="cost-item">
+                        <img alt="Иконка логистики"
+                            data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-6.webp"
+                            class="lazy" width="40" height="40">
+                        <div><strong>Логистика</strong><span>Больше объем поставок и рейсов</span></div>
+                        <span class="up-arrow">↑</span>
+                    </div>
+                    <div class="cost-item">
+                        <img alt="Иконка эксплуатации"
+                            data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-7.webp"
+                            class="lazy" width="40" height="40">
+                        <div><strong>Эксплуатация</strong><span>Выше расходы на обслуживание и ремонт</span></div>
+                        <span class="up-arrow">↑</span>
+                    </div>
+                </div>
+                <p class="cost-summary">Растут затраты и риски</p>
+            </article>
+        </div>
+    </div>
+</section><section class="standard section-light section" id="standard">
+    <div class="container">
+        <div class="section-head section-head--left">
+            <h2>Стандартное решение, которое<br>быстро теряет эффективность</h2>
+            <p>Лакокрасочные покрытия знакомы рынку,<br>но имеют серьёзные ограничения</p>
+        </div>
+        <div class="problem-grid">
+            <article class="problem-card white-card">
+                <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-9.webp" class="lazy" width="64" height="64">
+                <h3>Растрескивание через <span class="heading-num">2–5</span> лет</h3>
+                <p>При циклических нагрузках замерзания и оттаивания покрытие теряет целостность и быстрее выходит из рабочего состояния</p>
+            </article>
+            <article class="problem-card white-card">
+                <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-10.webp" class="lazy" width="64" height="64">
+                <h3>Более долгие СМР</h3>
+                <p>Нанесение покрытия увеличивает продолжительность строительно-монтажных работ и снижает темп проекта</p>
+            </article>
+            <article class="problem-card white-card">
+                <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-11.webp" class="lazy" width="64" height="64">
+                <h3>Монтаж только до -<span class="heading-num">10</span> °C</h3>
+                <p>Температурные ограничения сужают окно работ и делают процесс зависимым от сезона и погодных условий</p>
+            </article>
+            <article class="problem-card white-card">
+                <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-12.webp" class="lazy" width="64" height="64">
+                <h3>Слабее в сложных грунтах</h3>
+                <p>По сроку службы и стойкости традиционные покрытия уступают решениям, рассчитанным на работу в тяжёлых грунтовых условиях</p>
+            </article>
+        </div>
+        <div class="info-panel white-card">
+            <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-13.webp" class="lazy" width="32" height="32">
+            <p>Проблема не только в покрытии, а <strong>в ограничениях, которые оно создаёт для всего проекта</strong></p>
+        </div>
+    </div>
+</section>
+<section class="reline section-dark section" id="reline">
+    <div class="container">
+        <div class="section-head section-head--center section-head--dark">
+            <h2>Релайн противопучинное покрытие<br>для свайных фундаментов</h2>
+            <p>Релайн снижает воздействие морозного пучения и защищает сваи в сложных грунтовых условиях. Решение подходит для инфраструктурных, энергетических и промышленных объектов</p>
+        </div>
+        <div class="reline-grid">
+                            <article class="feature-card dark-card">
+                    <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-14.webp" class="lazy" width="64" height="64">
+                    <h3>Монтаж</h3>
+                    <p>На объекте или на заводе</p>
+                </article>
+                            <article class="feature-card dark-card">
+                    <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-15.webp" class="lazy" width="64" height="64">
+                    <h3>Работа</h3>
+                    <p>При температуре от -60 до +80 °C</p>
+                </article>
+                            <article class="feature-card dark-card">
+                    <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-16.webp" class="lazy" width="64" height="64">
+                    <h3>Эксплуатация</h3>
+                    <p>Готовность к эксплуатации через 6 часов</p>
+                </article>
+                            <article class="feature-card dark-card">
+                    <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-17.webp" class="lazy" width="64" height="64">
+                    <h3>Срок службы</h3>
+                    <p>До 50 лет</p>
+                </article>
+                    </div>
+    </div>
+</section><section class="product-section section-light section" id="ospt">
+    <div class="container product-section__inner">
+        <div class="product-section__content">
+            <h2>Противопучинная оболочка<br>для свай <span>ОСПТ "Релайн"</span></h2>
+            <p>Термоусаживаемая полимерная оболочка для защиты металлических и железобетонных свай от морозного пучения и коррозии в условиях Крайнего Севера</p>
+            <div class="stock"><span></span>В наличии на складе</div>
+            <div class="product-actions">
+                <button class="btn btn--orange" data-modal-open="" type="button">Заказать</button>
+                <a class="btn btn--outline-light" href="https://enanro.github.io/relain-site/ospt-reline/">Узнать подробнее</a>
+            </div>
+        </div>
+        <div class="product-section__image white-card">
+            <img alt="Противопучинная оболочка для свай ОСПТ Релайн"
+                data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/ospt-product.webp"
+                class="lazy" width="500" height="400">
+        </div>
+    </div>
+</section><section class="product-section product-section--reverse section-light section" id="pspp">
+    <div class="container product-section__inner">
+        <div class="product-section__image white-card">
+            <img alt="Противопучинное покрытие для свай ПСПП Релайн"
+                data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/pspp-product.webp"
+                class="lazy" width="500" height="400">
+        </div>
+        <div class="product-section__content">
+            <h2>Противопучинное покрытие<br>для свай <span>ПСПП "Релайн"</span></h2>
+            <p>Полимерное защитное эпоксидное покрытие для железобетонных свай от морозного пучения и коррозии. Применяется в зоне сезонного промерзания Крайнего Севера, легко наносится в трассовых условиях</p>
+            <div class="stock"><span></span>В наличии на складе</div>
+            <div class="product-actions">
+                <button class="btn btn--orange" data-modal-open="" type="button">Заказать</button>
+                <a class="btn btn--outline-light" href="https://enanro.github.io/relain-site/pspp-reline/">Узнать подробнее</a>
+            </div>
+        </div>
+    </div>
+</section><section class="comparison section-light section" id="comparison">
+    <div class="container">
+        <div class="section-head section-head--center">
+            <h2>Что выгоднее для проекта,<br>стандартное покрытие или <span>Релайн</span></h2>
+            <p>Релайн сокращает ограничения по монтажу,<br>сроку службы и работе в сложных грунтах</p>
+        </div>
+        <div aria-label="Сравнительная таблица с горизонтальной прокруткой" class="comparison-table-wrap white-card" tabindex="0">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Параметр</th>
+                        <th>Лакокрасочные покрытия</th>
+                        <th class="reline-col">Релайн</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Температура монтажа</td>
+                        <td>до -10 °C</td>
+                        <td class="reline-col">до -30 °C</td>
+                    </tr>
+                    <tr>
+                        <td>Время установки на 1 сваю</td>
+                        <td>~60 минут</td>
+                        <td class="reline-col">30 минут</td>
+                    </tr>
+                    <tr>
+                        <td>Выдержка перед погружением</td>
+                        <td>72–78 часов</td>
+                        <td class="reline-col">6 часов</td>
+                    </tr>
+                    <tr>
+                        <td>Снижение силы морозного пучения</td>
+                        <td>до 50–60%</td>
+                        <td class="reline-col">до 80%</td>
+                    </tr>
+                    <tr>
+                        <td>Срок службы</td>
+                        <td>20 лет</td>
+                        <td class="reline-col">50 лет</td>
+                    </tr>
+                    <tr>
+                        <td>Работа в агрессивной среде</td>
+                        <td>нет</td>
+                        <td class="reline-col">да</td>
+                    </tr>
+                    <tr>
+                        <td>Стоимость 1 сваи с СМР</td>
+                        <td>53–58 тыс. руб.</td>
+                        <td class="reline-col">49 тыс. руб.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="info-panel white-card">
+            <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-13.webp" class="lazy" width="32" height="32">
+            <p>Переход на Релайн помогает сократить сроки, снизить риски и улучшить экономику проекта</p>
+        </div>
+    </div>
+</section>
+<section class="economy section-dark section" id="economy">
+    <div class="container">
+        <div class="section-head section-head--center section-head--dark">
+            <h2>Экономический эффект заметен<br><span>на уровне всего проекта</span></h2>
+            <p>Релайн помогает снизить затраты на защиту свай, сократить длину свай и ускорить монтаж. Экономия формируется не только за счёт материала, но и за счёт более простой и быстрой реализации проекта.</p>
+        </div>
+        <div class="economy-grid">
+                            <article class="feature-card dark-card">
+                    <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-18.webp" class="lazy" width="64" height="64">
+                    <h3>Меньше длина свай</h3>
+                    <p>Снижение объёма материалов и затрат на монтаж</p>
+                </article>
+                            <article class="feature-card dark-card">
+                    <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-19.webp" class="lazy" width="64" height="64">
+                    <h3>Быстрее монтаж</h3>
+                    <p>Меньше времени на установку и меньше простоев</p>
+                </article>
+                            <article class="feature-card dark-card">
+                    <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-20.webp" class="lazy" width="64" height="64">
+                    <h3>Ниже стоимость проекта</h3>
+                    <p>Сокращение совокупных затрат на строительство и эксплуатацию</p>
+                </article>
+                    </div>
+        <div class="info-panel info-panel--dark dark-card">
+            <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/icon-13.webp" class="lazy" width="32" height="32">
+            <p>Экономия достигается за счёт скорости, долговечности и меньших ограничений в работе</p>
+        </div>
+    </div>
+</section>
+<section class="participants section-light section" id="participants">
+    <div class="container">
+        <div class="section-head section-head--center">
+            <h2>Решение для всех участников проекта</h2>
+        </div>
+        <div class="participants-grid">
+                            <article class="participant-card white-card">
+                    <a aria-label="Открыть страницу" class="round-arrow" href="https://enanro.github.io/relain-site/contractors/">
+                        <img alt="" src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/icons/arrow-up-right-orange.webp" width="24" height="24">
+                    </a>
+                    <h3>Подрядчикам</h3>
+                    <p>Сокращение времени монтажа, возможность работы в полевых условиях до -30 °C, меньше простоев и меньше ограничений по сезону. Основано на данных о времени монтажа 15–30 минут и температурных условиях применения.</p>
+                    <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/image-1.webp" class="lazy" width="300" height="200">
+                                            <a class="btn btn--orange" href="https://enanro.github.io/relain-site/contractors/">Решения для подрядчиков</a>
+                                    </article>
+                            <article class="participant-card white-card">
+                    <a aria-label="Открыть страницу" class="round-arrow" href="https://enanro.github.io/relain-site/designers/">
+                        <img alt="" src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/icons/arrow-up-right-orange.webp" width="24" height="24">
+                    </a>
+                    <h3>Проектировщикам</h3>
+                    <p>Нормативная база, испытания, материалы для проектирования, стандартизированные решения и подтверждённые коэффициенты для расчёта свайных фундаментов.</p>
+                    <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/image-2.webp" class="lazy" width="300" height="200">
+                                            <a class="btn btn--orange" href="https://enanro.github.io/relain-site/designers/">Решения для проектировщиков</a>
+                                    </article>
+                            <article class="participant-card white-card">
+                    <a aria-label="Открыть страницу" class="round-arrow" href="https://enanro.github.io/relain-site/customers/">
+                        <img alt="" src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/icons/arrow-up-right-orange.webp" width="24" height="24">
+                    </a>
+                    <h3>Заказчикам</h3>
+                    <p>Снижение эксплуатационных рисков, контроль стоимости проекта, повышение надёжности инфраструктурных объектов и прогнозируемость результата.</p>
+                    <img alt="" data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/image-3.webp" class="lazy" width="300" height="200">
+                                            <a class="btn btn--orange" href="https://enanro.github.io/relain-site/customers/">Решения для заказчиков</a>
+                                    </article>
+                    </div>
+    </div>
+</section><section class="documents section-dark section" id="documents">
+    <div class="container">
+        <div class="section-head section-head--center section-head--dark documents__head">
+            <h2>Подтверждено испытаниями<br>и нормативной базой</h2>
+            <p>Технология подтверждена лабораторными испытаниями,
+                профильными заключениями и нормативными документами.
+                Решение применимо в проектировании и на практике.</p>
+        </div>
+        <div class="documents-layout">
+            <article class="documents-card dark-card">
+                <ul>
+                    <li>В <strong>2021 году</strong> проведены лабораторные испытания НИЦ «Строительство»</li>
+                    <li>Применение технологии закреплено в <strong>СП 24.13330-2021</strong></li>
+                    <li>Разработан <strong>СТО 36554501-054-2017</strong> по проектированию и устройству фундаментов с оболочкой «Релайн»</li>
+                    <li>По заключению НИИЖБ им. А. А. Гвоздева срок службы покрытия составляет <strong>50 лет</strong></li>
+                    <li>В <strong>2024 году</strong> проведены дополнительные испытания по заданию «Газпром Проектирование» <strong>для 19 типов грунтов</strong></li>
+                </ul>
+            </article>
+            <div aria-label="Испытания и нормативные документы" class="document-images">
+                <img alt="Сертификат соответствия по результатам испытаний Релайн"
+                    data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/docs/cert-1.webp"
+                    class="lazy" width="300" height="420">
+                <img alt="Нормативный документ по применению ОСПТ Релайн"
+                    data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/docs/cert-2.webp"
+                    class="lazy" width="300" height="420">
+                <img alt="Стандарт организации по проектированию свайных фундаментов с оболочкой Релайн"
+                    data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/docs/cert-3.webp"
+                    class="lazy" width="300" height="420">
+            </div>
+        </div>
+        <div class="section-actions section-actions--center">
+            <button class="btn btn--orange" data-modal-open=""
+                data-topic="Полный комплект документации ОСПТ" type="button">
+                Запросить полный комплект документации
+            </button>
+        </div>
+    </div>
+</section><section class="geography section-light section" id="geography">
+    <div class="container">
+        <div class="section-head section-head--left">
+            <h2>География проектов</h2>
+        </div>
+        <div aria-label="Интерактивная карта проектов" class="map-scroll" tabindex="0">
+            <div class="interactive-project-map">
+                <img src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/map.webp"
+                    alt="Карта проектов"
+                    class="interactive-project-map__image"
+                    width="1300" height="670">
+                <svg aria-label="Активные регионы проектов" class="interactive-project-map__overlay" viewBox="0 0 1300 670" preserveAspectRatio="none">
+                    <path aria-label="Ханты-Мансийский АО" class="interactive-project-region" d="M 455 307 L 452 310 L 451 310 L 448 313 L 447 313 L 446 314 L 441 314 L 439 312 L 437 312 L 430 319 L 430 321 L 429 322 L 429 324 L 427 326 L 426 326 L 417 335 L 417 336 L 416 337 L 416 338 L 414 340 L 414 341 L 413 342 L 413 343 L 411 345 L 411 346 L 410 347 L 410 348 L 409 349 L 409 350 L 408 351 L 408 352 L 410 354 L 410 356 L 411 357 L 411 359 L 412 359 L 414 361 L 415 361 L 416 362 L 417 362 L 419 364 L 419 365 L 420 366 L 420 367 L 421 368 L 421 370 L 422 371 L 422 372 L 423 373 L 423 376 L 424 377 L 424 382 L 423 383 L 423 384 L 420 387 L 420 391 L 421 392 L 421 397 L 422 398 L 422 402 L 420 404 L 420 405 L 418 407 L 418 409 L 419 410 L 420 410 L 422 412 L 423 412 L 425 414 L 426 414 L 427 415 L 427 421 L 426 422 L 426 429 L 428 431 L 432 431 L 434 429 L 434 428 L 436 426 L 437 426 L 438 427 L 439 427 L 440 428 L 445 428 L 446 427 L 451 427 L 452 426 L 453 426 L 455 424 L 460 424 L 461 423 L 461 422 L 463 420 L 468 425 L 470 425 L 471 426 L 472 426 L 473 427 L 475 427 L 476 428 L 479 428 L 480 429 L 480 430 L 481 431 L 481 432 L 482 433 L 482 435 L 483 436 L 483 437 L 484 438 L 484 439 L 485 440 L 485 441 L 486 442 L 486 443 L 487 444 L 487 445 L 488 446 L 488 447 L 489 448 L 489 449 L 490 450 L 490 451 L 492 453 L 493 453 L 496 456 L 497 456 L 500 459 L 501 459 L 502 460 L 503 460 L 504 459 L 505 459 L 506 458 L 507 458 L 509 456 L 509 453 L 511 451 L 512 451 L 514 449 L 518 449 L 519 450 L 519 449 L 520 448 L 520 446 L 521 445 L 521 443 L 522 442 L 522 440 L 523 439 L 523 437 L 527 433 L 528 433 L 531 430 L 532 431 L 535 431 L 536 432 L 538 432 L 539 433 L 540 433 L 542 435 L 543 435 L 545 437 L 546 437 L 547 438 L 548 438 L 549 439 L 562 439 L 564 441 L 565 441 L 568 444 L 569 444 L 570 445 L 572 445 L 573 444 L 574 444 L 576 442 L 577 442 L 578 441 L 579 441 L 580 440 L 581 440 L 582 439 L 583 439 L 585 441 L 586 441 L 588 443 L 595 443 L 596 442 L 597 442 L 598 441 L 599 441 L 600 440 L 602 440 L 602 438 L 601 437 L 600 437 L 598 435 L 597 435 L 596 434 L 595 434 L 594 433 L 594 422 L 590 418 L 587 418 L 586 417 L 586 416 L 584 414 L 584 413 L 581 410 L 577 410 L 576 411 L 575 410 L 574 410 L 569 405 L 568 405 L 565 408 L 564 408 L 562 410 L 560 410 L 559 409 L 552 409 L 551 408 L 550 408 L 548 406 L 547 406 L 545 404 L 544 404 L 541 401 L 541 400 L 539 398 L 539 397 L 538 396 L 538 395 L 537 395 L 536 394 L 535 394 L 534 393 L 533 393 L 532 392 L 530 392 L 529 391 L 528 391 L 527 390 L 526 390 L 525 389 L 524 389 L 516 381 L 515 381 L 514 380 L 504 380 L 503 379 L 503 372 L 501 370 L 501 369 L 500 368 L 500 358 L 496 354 L 496 353 L 487 353 L 486 352 L 479 352 L 476 349 L 476 342 L 475 341 L 474 341 L 471 338 L 469 338 L 468 337 L 456 337 L 455 336 L 455 335 L 454 334 L 454 333 L 453 332 L 453 331 L 452 330 L 452 329 L 451 328 L 451 326 L 452 325 L 452 324 L 455 321 L 455 320 L 457 318 L 457 307 Z" tabindex="0"></path>
+                    <path aria-label="Красноярский край" class="interactive-project-region" d="M 734 156 L 733 157 L 732 157 L 730 159 L 730 160 L 728 162 L 728 163 L 726 165 L 726 166 L 724 168 L 724 169 L 723 170 L 723 171 L 724 172 L 724 175 L 725 176 L 725 178 L 724 179 L 718 179 L 717 180 L 715 180 L 716 181 L 716 182 L 718 184 L 718 185 L 719 186 L 719 187 L 718 188 L 717 187 L 713 187 L 712 186 L 711 186 L 708 189 L 702 189 L 701 188 L 699 188 L 698 187 L 698 186 L 697 185 L 697 184 L 693 184 L 692 185 L 688 185 L 688 190 L 687 191 L 685 191 L 684 192 L 678 192 L 677 193 L 674 193 L 673 194 L 672 194 L 668 198 L 667 198 L 665 200 L 664 200 L 663 201 L 657 201 L 654 204 L 653 204 L 653 205 L 652 206 L 652 209 L 651 210 L 651 215 L 653 217 L 653 218 L 654 219 L 654 220 L 655 221 L 655 222 L 654 223 L 652 223 L 651 224 L 648 224 L 647 225 L 646 224 L 640 224 L 639 223 L 634 223 L 633 222 L 622 222 L 621 221 L 620 221 L 618 223 L 618 224 L 617 225 L 617 233 L 616 234 L 616 240 L 623 247 L 623 248 L 624 249 L 624 250 L 625 251 L 625 252 L 626 253 L 626 255 L 625 256 L 615 256 L 614 255 L 614 254 L 613 253 L 613 252 L 612 251 L 612 250 L 611 249 L 611 248 L 610 247 L 610 246 L 609 245 L 609 244 L 607 242 L 607 241 L 604 241 L 604 242 L 605 243 L 605 244 L 606 245 L 606 247 L 607 248 L 607 249 L 608 250 L 608 251 L 609 252 L 608 253 L 607 253 L 606 254 L 603 254 L 602 255 L 602 261 L 603 262 L 603 263 L 604 264 L 604 265 L 605 266 L 605 267 L 606 268 L 606 269 L 607 270 L 606 271 L 606 274 L 605 275 L 605 276 L 603 278 L 601 278 L 600 279 L 599 279 L 598 280 L 597 280 L 596 281 L 595 281 L 594 282 L 593 282 L 593 284 L 592 285 L 592 287 L 595 290 L 595 291 L 598 294 L 598 295 L 599 296 L 601 296 L 602 297 L 605 297 L 606 298 L 607 298 L 609 300 L 609 304 L 610 305 L 610 312 L 609 313 L 609 315 L 608 316 L 608 317 L 607 318 L 607 320 L 606 321 L 604 321 L 603 322 L 601 322 L 600 323 L 599 323 L 600 324 L 600 326 L 601 327 L 601 329 L 600 330 L 600 332 L 599 333 L 599 336 L 602 339 L 602 340 L 605 343 L 605 347 L 604 348 L 604 356 L 603 357 L 603 358 L 604 359 L 604 360 L 607 363 L 607 364 L 608 365 L 608 371 L 607 372 L 607 377 L 608 377 L 611 380 L 612 380 L 614 382 L 614 384 L 615 385 L 615 392 L 613 394 L 613 395 L 610 398 L 610 399 L 609 400 L 609 402 L 608 403 L 608 409 L 606 411 L 606 412 L 602 416 L 602 417 L 599 420 L 599 421 L 598 422 L 598 431 L 600 433 L 601 433 L 602 434 L 603 434 L 604 435 L 605 435 L 606 436 L 606 439 L 605 440 L 605 441 L 603 443 L 602 443 L 601 444 L 600 444 L 599 445 L 597 445 L 596 446 L 592 446 L 591 447 L 591 448 L 592 449 L 592 452 L 593 453 L 593 456 L 592 457 L 592 458 L 590 460 L 590 463 L 592 463 L 593 464 L 598 464 L 599 465 L 605 465 L 606 466 L 610 466 L 611 467 L 611 468 L 612 469 L 612 470 L 613 471 L 613 472 L 614 473 L 614 474 L 615 475 L 615 476 L 616 477 L 616 478 L 617 479 L 622 479 L 623 480 L 623 483 L 622 484 L 622 486 L 614 494 L 614 495 L 615 496 L 615 498 L 619 502 L 620 502 L 621 503 L 623 503 L 624 504 L 625 504 L 626 505 L 626 508 L 625 509 L 625 510 L 622 513 L 621 513 L 618 516 L 618 519 L 617 520 L 617 526 L 616 527 L 617 528 L 617 529 L 618 530 L 618 531 L 619 532 L 619 533 L 620 534 L 620 535 L 621 536 L 621 537 L 622 538 L 622 539 L 623 540 L 618 545 L 617 545 L 617 547 L 618 548 L 618 550 L 619 551 L 619 553 L 626 553 L 627 552 L 631 552 L 632 553 L 633 553 L 636 556 L 636 557 L 635 558 L 635 559 L 634 560 L 634 561 L 636 563 L 636 564 L 638 566 L 638 567 L 639 568 L 639 572 L 640 573 L 640 576 L 641 577 L 641 579 L 642 580 L 642 586 L 641 587 L 640 587 L 639 588 L 638 588 L 637 589 L 637 593 L 636 594 L 636 595 L 635 596 L 635 597 L 634 598 L 632 598 L 631 599 L 629 599 L 629 600 L 628 601 L 628 602 L 627 603 L 627 605 L 628 605 L 630 607 L 631 607 L 634 610 L 640 610 L 641 611 L 649 611 L 653 607 L 654 607 L 655 606 L 657 606 L 657 603 L 659 601 L 660 601 L 662 599 L 662 595 L 663 594 L 666 594 L 667 593 L 667 590 L 669 588 L 672 588 L 673 587 L 683 587 L 684 586 L 688 586 L 688 583 L 686 581 L 685 581 L 677 573 L 677 568 L 678 567 L 679 567 L 680 566 L 681 566 L 682 565 L 689 565 L 689 554 L 690 553 L 690 547 L 691 546 L 691 545 L 692 544 L 692 543 L 693 542 L 693 541 L 695 539 L 696 539 L 697 538 L 701 538 L 701 535 L 702 534 L 700 532 L 700 531 L 698 529 L 698 528 L 697 527 L 697 526 L 695 524 L 695 522 L 696 521 L 696 520 L 697 519 L 697 518 L 699 516 L 699 515 L 700 514 L 700 513 L 701 512 L 701 511 L 702 510 L 715 510 L 716 509 L 717 509 L 720 506 L 720 505 L 722 503 L 724 505 L 724 506 L 725 507 L 725 508 L 726 509 L 726 511 L 727 512 L 727 513 L 728 514 L 728 515 L 729 516 L 730 515 L 730 512 L 729 511 L 729 509 L 734 504 L 734 503 L 744 493 L 744 489 L 745 488 L 745 486 L 746 485 L 747 485 L 748 484 L 749 484 L 750 483 L 752 483 L 753 482 L 754 482 L 756 484 L 756 486 L 757 487 L 757 488 L 758 489 L 758 490 L 759 491 L 760 491 L 761 492 L 762 492 L 763 493 L 763 492 L 764 491 L 764 489 L 767 486 L 767 483 L 766 482 L 764 482 L 763 481 L 763 475 L 768 470 L 768 468 L 767 467 L 766 467 L 765 466 L 762 466 L 760 464 L 760 462 L 759 461 L 759 459 L 758 458 L 758 457 L 760 455 L 760 454 L 761 453 L 761 451 L 759 449 L 759 448 L 758 447 L 760 445 L 761 445 L 763 443 L 764 443 L 766 441 L 767 441 L 768 440 L 768 439 L 769 438 L 769 437 L 770 436 L 770 435 L 771 434 L 771 433 L 772 432 L 772 430 L 771 429 L 771 425 L 770 424 L 770 423 L 768 421 L 768 419 L 769 418 L 769 417 L 770 416 L 770 414 L 771 413 L 771 412 L 770 411 L 770 409 L 769 408 L 769 402 L 771 400 L 772 400 L 773 399 L 774 399 L 775 398 L 778 398 L 779 397 L 782 397 L 783 396 L 783 394 L 782 395 L 781 395 L 779 397 L 778 397 L 776 395 L 775 395 L 773 393 L 763 393 L 762 392 L 762 386 L 763 385 L 763 384 L 768 379 L 768 378 L 769 377 L 769 376 L 770 375 L 770 374 L 768 372 L 767 372 L 766 371 L 766 365 L 763 362 L 763 358 L 764 357 L 764 354 L 760 350 L 761 349 L 761 348 L 766 343 L 766 334 L 765 333 L 765 321 L 764 320 L 764 315 L 763 314 L 763 313 L 761 311 L 761 310 L 759 308 L 759 307 L 757 305 L 757 304 L 759 302 L 760 302 L 761 301 L 762 301 L 766 297 L 767 297 L 770 294 L 775 294 L 775 290 L 776 289 L 776 287 L 777 286 L 777 285 L 779 283 L 779 278 L 782 275 L 783 275 L 787 271 L 788 271 L 789 270 L 789 269 L 785 265 L 785 256 L 784 255 L 784 254 L 781 251 L 781 250 L 779 248 L 779 247 L 777 245 L 777 244 L 776 243 L 776 241 L 775 240 L 775 237 L 773 235 L 773 234 L 772 233 L 772 231 L 771 232 L 770 232 L 769 233 L 768 233 L 766 235 L 765 235 L 762 238 L 760 238 L 759 239 L 757 239 L 756 240 L 754 240 L 753 241 L 753 242 L 752 243 L 752 244 L 749 247 L 748 246 L 748 240 L 749 239 L 749 236 L 750 235 L 750 234 L 767 217 L 767 216 L 768 215 L 768 214 L 769 213 L 769 212 L 770 211 L 770 210 L 772 208 L 772 207 L 773 206 L 773 205 L 774 204 L 774 203 L 775 202 L 775 201 L 776 200 L 776 198 L 777 197 L 777 195 L 778 194 L 778 191 L 779 190 L 779 188 L 780 187 L 780 185 L 775 180 L 775 179 L 768 172 L 768 171 L 758 171 L 757 170 L 756 170 L 756 171 L 753 174 L 753 175 L 751 177 L 747 177 L 746 178 L 745 178 L 744 177 L 745 176 L 745 174 L 746 173 L 746 171 L 747 170 L 747 168 L 748 167 L 747 167 L 746 166 L 739 166 L 738 165 L 738 164 L 739 163 L 739 162 L 741 160 L 737 156 Z" tabindex="0"></path>
+                    <path aria-label="Якутия" class="interactive-project-region" d="M 1060 138 L 1059 139 L 1059 140 L 1057 142 L 1056 142 L 1054 144 L 1053 144 L 1052 145 L 1051 145 L 1050 146 L 1049 146 L 1048 147 L 1047 147 L 1046 148 L 1045 148 L 1037 140 L 1033 140 L 1032 139 L 1029 139 L 1028 140 L 1027 140 L 1025 142 L 1024 142 L 1022 144 L 1021 144 L 1019 146 L 1018 146 L 1015 149 L 1015 150 L 1011 154 L 1011 155 L 1009 157 L 1009 159 L 1008 160 L 1008 163 L 1007 164 L 1007 166 L 1005 168 L 1003 168 L 1002 169 L 999 169 L 998 168 L 997 168 L 996 167 L 995 167 L 994 166 L 987 166 L 987 167 L 983 171 L 982 170 L 981 170 L 980 169 L 978 171 L 976 171 L 973 168 L 973 166 L 976 163 L 967 163 L 963 167 L 962 167 L 962 168 L 963 169 L 963 171 L 964 172 L 964 174 L 965 175 L 965 178 L 966 179 L 958 187 L 957 187 L 956 186 L 956 177 L 954 177 L 949 182 L 947 180 L 947 174 L 950 171 L 951 171 L 947 171 L 946 172 L 945 172 L 944 173 L 943 173 L 942 174 L 941 174 L 940 175 L 939 175 L 938 176 L 937 176 L 936 177 L 935 177 L 934 178 L 933 178 L 932 179 L 931 179 L 929 181 L 930 182 L 930 183 L 932 185 L 926 191 L 927 192 L 927 193 L 929 193 L 930 192 L 932 192 L 933 193 L 933 199 L 938 204 L 938 205 L 936 207 L 933 207 L 932 208 L 930 208 L 928 210 L 928 211 L 929 212 L 929 213 L 930 214 L 930 216 L 929 217 L 924 217 L 923 218 L 922 218 L 921 217 L 919 217 L 918 216 L 916 216 L 915 215 L 915 216 L 914 217 L 914 220 L 913 221 L 913 223 L 911 225 L 910 224 L 905 224 L 904 223 L 900 223 L 899 222 L 898 222 L 898 242 L 897 243 L 893 243 L 892 242 L 887 242 L 885 240 L 884 240 L 874 230 L 873 230 L 870 227 L 870 225 L 871 224 L 872 224 L 874 222 L 875 222 L 874 221 L 874 220 L 872 218 L 872 217 L 870 215 L 870 214 L 868 212 L 868 211 L 865 208 L 864 208 L 863 207 L 862 207 L 861 206 L 860 207 L 858 207 L 857 208 L 855 208 L 854 209 L 850 209 L 849 208 L 847 208 L 846 207 L 845 207 L 844 206 L 842 206 L 842 215 L 841 216 L 841 220 L 839 222 L 838 222 L 837 223 L 836 223 L 835 224 L 833 224 L 832 225 L 831 225 L 830 226 L 829 226 L 828 227 L 826 227 L 825 228 L 824 228 L 823 229 L 820 229 L 819 228 L 818 228 L 816 226 L 815 226 L 812 223 L 813 222 L 813 221 L 796 221 L 793 224 L 793 225 L 791 227 L 791 230 L 790 231 L 790 232 L 789 233 L 788 232 L 788 230 L 787 229 L 787 225 L 785 223 L 784 223 L 780 227 L 779 227 L 778 228 L 777 228 L 776 229 L 775 229 L 775 232 L 777 234 L 777 235 L 778 236 L 778 239 L 779 240 L 779 242 L 780 243 L 780 244 L 782 246 L 782 247 L 785 250 L 785 251 L 787 253 L 787 254 L 788 255 L 788 263 L 789 264 L 789 265 L 793 269 L 793 270 L 788 275 L 787 275 L 783 279 L 782 279 L 782 283 L 781 284 L 781 285 L 780 286 L 780 287 L 779 288 L 779 290 L 778 291 L 778 295 L 777 296 L 777 297 L 776 298 L 770 298 L 768 300 L 767 300 L 763 304 L 762 304 L 761 305 L 762 306 L 762 307 L 764 309 L 764 310 L 765 311 L 765 312 L 767 314 L 767 320 L 768 321 L 768 333 L 769 334 L 769 344 L 765 348 L 765 349 L 764 350 L 765 351 L 766 351 L 767 352 L 767 357 L 766 358 L 766 361 L 769 364 L 769 369 L 771 371 L 772 371 L 773 372 L 773 376 L 772 377 L 772 378 L 771 379 L 771 380 L 767 384 L 767 385 L 765 387 L 765 390 L 774 390 L 776 392 L 777 392 L 778 393 L 779 392 L 780 392 L 782 390 L 783 390 L 787 394 L 787 395 L 789 397 L 789 398 L 791 400 L 791 401 L 789 403 L 788 403 L 787 404 L 787 407 L 789 407 L 790 406 L 791 406 L 793 404 L 794 404 L 795 405 L 795 406 L 796 407 L 796 408 L 797 409 L 797 410 L 798 411 L 798 412 L 799 413 L 799 424 L 800 424 L 801 425 L 802 425 L 805 428 L 805 429 L 804 430 L 804 433 L 803 434 L 803 440 L 804 441 L 804 443 L 806 445 L 808 445 L 809 446 L 811 446 L 813 448 L 813 449 L 812 450 L 812 451 L 811 452 L 811 454 L 810 455 L 810 456 L 809 457 L 809 458 L 808 459 L 808 461 L 807 462 L 807 474 L 806 475 L 806 476 L 811 481 L 814 478 L 815 478 L 816 477 L 823 477 L 824 476 L 825 476 L 826 475 L 826 474 L 827 473 L 827 472 L 829 470 L 834 475 L 838 471 L 838 470 L 840 468 L 840 467 L 841 466 L 841 465 L 842 464 L 842 463 L 843 462 L 843 460 L 844 459 L 844 458 L 845 457 L 845 456 L 846 455 L 846 454 L 847 453 L 847 452 L 848 451 L 848 450 L 849 449 L 849 448 L 850 447 L 852 447 L 853 446 L 859 446 L 860 447 L 862 447 L 863 448 L 864 448 L 865 449 L 867 449 L 868 450 L 869 450 L 870 451 L 871 451 L 872 452 L 872 454 L 873 455 L 873 457 L 874 458 L 874 459 L 875 458 L 877 458 L 878 457 L 879 457 L 880 456 L 882 456 L 884 458 L 885 458 L 888 461 L 888 462 L 889 463 L 889 464 L 890 465 L 890 467 L 891 468 L 891 469 L 892 470 L 892 471 L 893 472 L 893 474 L 894 475 L 894 476 L 895 477 L 895 478 L 896 479 L 896 480 L 897 481 L 897 482 L 898 483 L 898 484 L 899 485 L 899 486 L 900 487 L 900 488 L 902 490 L 902 491 L 903 492 L 903 493 L 904 494 L 904 495 L 905 496 L 905 497 L 906 498 L 906 499 L 907 499 L 909 497 L 910 497 L 911 496 L 912 496 L 913 495 L 914 495 L 915 494 L 916 494 L 917 493 L 919 493 L 920 492 L 921 492 L 923 494 L 924 494 L 926 496 L 927 496 L 929 494 L 930 494 L 932 496 L 933 496 L 934 497 L 935 497 L 938 494 L 949 494 L 950 495 L 951 495 L 955 499 L 957 499 L 958 498 L 960 498 L 961 497 L 963 497 L 964 496 L 965 496 L 966 495 L 969 495 L 970 496 L 971 496 L 973 498 L 974 498 L 975 497 L 976 497 L 977 496 L 978 496 L 979 495 L 980 495 L 981 494 L 982 494 L 983 493 L 985 493 L 986 492 L 987 492 L 988 491 L 989 491 L 990 490 L 991 490 L 992 491 L 997 491 L 998 490 L 999 490 L 999 486 L 1001 484 L 1002 484 L 1003 483 L 1004 483 L 1005 482 L 1006 482 L 1007 481 L 1008 481 L 1009 480 L 1010 480 L 1011 479 L 1012 479 L 1012 477 L 1011 476 L 1011 474 L 1010 473 L 1010 471 L 1009 470 L 1009 469 L 1013 465 L 1013 462 L 1010 459 L 1009 459 L 1007 457 L 1006 457 L 1003 454 L 1003 453 L 1005 451 L 1005 450 L 1006 449 L 1006 448 L 1007 447 L 1007 445 L 1006 444 L 1005 444 L 1003 442 L 1002 442 L 999 439 L 999 438 L 1003 434 L 1003 414 L 1004 413 L 1006 413 L 1007 412 L 1008 412 L 1009 411 L 1011 411 L 1012 410 L 1014 410 L 1015 409 L 1016 409 L 1017 408 L 1019 408 L 1020 407 L 1020 402 L 1021 401 L 1021 400 L 1022 399 L 1031 399 L 1031 398 L 1032 397 L 1032 395 L 1033 394 L 1033 387 L 1035 385 L 1036 385 L 1037 384 L 1037 382 L 1036 381 L 1036 379 L 1035 378 L 1035 375 L 1034 374 L 1034 373 L 1033 372 L 1032 372 L 1030 370 L 1029 370 L 1027 368 L 1027 367 L 1028 366 L 1028 363 L 1029 362 L 1029 360 L 1030 359 L 1030 356 L 1031 355 L 1031 350 L 1030 349 L 1030 348 L 1029 347 L 1029 345 L 1028 344 L 1028 342 L 1027 341 L 1027 340 L 1026 339 L 1026 335 L 1028 333 L 1028 332 L 1030 330 L 1032 330 L 1033 331 L 1034 331 L 1035 332 L 1037 332 L 1038 333 L 1040 333 L 1041 334 L 1044 334 L 1045 333 L 1049 333 L 1049 332 L 1050 331 L 1050 330 L 1052 328 L 1054 328 L 1055 327 L 1060 327 L 1060 326 L 1061 325 L 1061 321 L 1060 320 L 1060 319 L 1059 318 L 1059 317 L 1058 316 L 1058 315 L 1057 314 L 1057 312 L 1056 311 L 1056 310 L 1055 309 L 1055 308 L 1054 307 L 1054 306 L 1053 305 L 1053 304 L 1052 303 L 1052 302 L 1051 301 L 1051 300 L 1050 299 L 1050 298 L 1049 297 L 1049 296 L 1048 295 L 1048 294 L 1047 293 L 1047 289 L 1048 288 L 1048 284 L 1050 282 L 1051 282 L 1053 280 L 1054 280 L 1057 277 L 1058 277 L 1058 276 L 1057 275 L 1057 274 L 1056 273 L 1056 272 L 1055 271 L 1055 269 L 1064 260 L 1065 260 L 1066 259 L 1073 259 L 1078 254 L 1078 245 L 1073 240 L 1073 234 L 1071 232 L 1071 231 L 1069 229 L 1069 228 L 1073 224 L 1070 221 L 1070 220 L 1069 219 L 1069 218 L 1079 208 L 1080 208 L 1082 206 L 1084 206 L 1087 203 L 1087 202 L 1088 201 L 1088 199 L 1087 198 L 1087 197 L 1086 196 L 1086 195 L 1085 194 L 1085 193 L 1084 192 L 1084 191 L 1083 190 L 1083 189 L 1082 188 L 1074 188 L 1073 187 L 1072 187 L 1071 186 L 1070 186 L 1069 185 L 1067 185 L 1066 184 L 1066 183 L 1065 182 L 1065 180 L 1064 179 L 1064 178 L 1063 177 L 1063 175 L 1062 174 L 1063 173 L 1063 172 L 1069 166 L 1069 165 L 1075 159 L 1075 158 L 1076 157 L 1076 150 L 1074 148 L 1073 148 L 1070 145 L 1069 145 L 1066 142 L 1065 142 L 1062 139 L 1061 139 Z" tabindex="0"></path>
+                    <path aria-label="Ямало-Ненецкий автономный округ" class="interactive-project-region" d="M 560 214 L 540 234 L 533 235 L 528 239 L 532 244 L 532 247 L 526 256 L 521 257 L 521 260 L 527 266 L 525 269 L 525 275 L 528 279 L 519 287 L 515 282 L 513 273 L 506 262 L 502 264 L 505 269 L 499 279 L 501 288 L 498 293 L 492 295 L 485 301 L 472 301 L 465 307 L 461 307 L 460 319 L 454 327 L 457 333 L 459 334 L 470 334 L 479 341 L 479 347 L 481 349 L 497 350 L 503 357 L 504 368 L 507 372 L 506 377 L 516 377 L 527 387 L 538 391 L 545 401 L 554 406 L 563 406 L 570 401 L 576 407 L 583 407 L 589 415 L 592 415 L 597 419 L 605 409 L 606 400 L 613 390 L 612 384 L 604 378 L 605 365 L 600 359 L 601 358 L 602 344 L 596 336 L 596 333 L 598 329 L 596 321 L 605 318 L 608 310 L 607 309 L 607 304 L 606 301 L 598 299 L 589 287 L 590 281 L 592 279 L 602 275 L 604 271 L 599 261 L 600 253 L 602 251 L 605 251 L 602 243 L 598 242 L 596 249 L 589 244 L 588 246 L 588 249 L 595 256 L 595 262 L 596 263 L 593 264 L 579 251 L 579 244 L 585 237 L 585 228 L 586 227 L 583 234 L 578 239 L 574 240 L 570 245 L 570 263 L 560 278 L 560 287 L 569 287 L 580 299 L 580 309 L 574 316 L 574 318 L 580 322 L 579 324 L 571 326 L 569 325 L 566 315 L 573 302 L 570 295 L 564 295 L 563 294 L 561 294 L 556 299 L 556 310 L 555 312 L 545 322 L 536 325 L 531 331 L 529 331 L 509 318 L 509 312 L 510 311 L 523 317 L 536 311 L 542 306 L 548 294 L 547 284 L 561 251 L 560 242 L 569 233 L 570 222 L 563 214 Z" tabindex="0"></path>
+                    <g aria-label="Норильск" class="norilsk-map-hotspot" tabindex="0" role="button">
+                        <circle class="norilsk-map-hotspot__hit" cx="710" cy="220" r="22"></circle>
+                        <circle class="norilsk-map-hotspot__dot" cx="710" cy="220" r="6"></circle>
+                    </g>
+                </svg>
+
+                <!-- Подписи регионов -->
+                <div class="khmao-map-label" aria-label="Ханты-Мансийский АО — Реконструкция ВЛ 110 кВ Снежная Ханты-Мансийская">
+                    <img src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/map-area-1.webp" class="khmao-map-label__shape" alt="" width="300" height="120">
+                    <div class="khmao-map-label__content">
+                        <strong>Ханты-Мансийский АО</strong>
+                        <span>Реконструкция ВЛ 110 кВ Снежная Ханты-Мансийская</span>
+                        <span class="khmao-map-label__arrow">↗</span>
+                    </div>
+                </div>
+                <div class="yakutia-map-label" aria-label="Республика Саха (Якутия) — проекты Чаяндинского НГКМ">
+                    <img src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/map-area-2.webp" class="yakutia-map-label__shape" alt="" width="300" height="140">
+                    <div class="yakutia-map-label__content">
+                        <strong>Республика Саха</strong>
+                        <span class="yakutia-map-label__project">Обустройство Чаяндинского НГКМ в системе МГ «Сила Сибири» ПАО «Газпром»</span>
+                        <span class="yakutia-map-label__project">Обустройство нефтяной оторочки Чаяндинского НГКМ в системе МГ «Сила Сибири» ПАО «Газпром»</span>
+                        <span class="yakutia-map-label__arrow">↗</span>
+                    </div>
+                </div>
+                <div class="yanao-map-label" aria-label="Ямало-Ненецкий автономный округ — проект Южно-Русского месторождения">
+                    <img src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/map-area-2.webp" class="yanao-map-label__shape" alt="" width="300" height="120">
+                    <div class="yanao-map-label__content">
+                        <strong>Ямало-Ненецкий АО</strong>
+                        <span>Обустройство Туронской газовой залежи Южно-Русского месторождения. ПАО «Роснефть»</span>
+                        <span class="yanao-map-label__arrow">↗</span>
+                    </div>
+                </div>
+                <div class="norilsk-map-label" aria-label="Норильск — проект Норильск Трансгаз">
+                    <img src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/home/map-area-2.webp" class="norilsk-map-label__shape" alt="" width="300" height="120">
+                    <div class="norilsk-map-label__content">
+                        <strong>город Норильск</strong>
+                        <span>Строительство Норильских ТЭЦ-1 и ТЭЦ-3, «Норильск Трансгаз»</span>
+                        <span class="norilsk-map-label__arrow">↗</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section><section class="section section-dark request" id="contacts">
+    <div class="container request__inner">
+        <div class="request-form-card">
+            <h2>Рассчитать сроки и КП</h2>
+            <p>Оставьте заявку и получите коммерческое<br>предложение в течение рабочего дня</p>
+                        <p class="wpcf7-contact-form-not-found"><strong>Ошибка:</strong> Контактная форма не найдена.</p>        </div>
+        <aside aria-label="Контакты" class="request-side">
+            <article class="side-card dark-card contacts-card">
+                <h2>Контакты</h2>
+                <ul class="contact-list">
+                    <li>
+                        <img data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/icons/icon-contact-phone.webp"
+                            alt="" class="lazy" width="32" height="32">
+                        <div>
+                            <span>Телефон:</span>
+                            <a href="tel:">
+                                                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <img data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/icons/icon-contact-pin.webp"
+                            alt="" class="lazy" width="32" height="32">
+                        <div>
+                            <span>Адрес:</span>
+                            <p></p>
+                        </div>
+                    </li>
+                    <li>
+                        <img data-src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/icons/icon-contact-email.webp"
+                            alt="" class="lazy" width="32" height="32">
+                        <div>
+                            <span>E-mail:</span>
+                            <a href="mailto:"></a>
+                        </div>
+                    </li>
+                </ul>
+            </article>
+        </aside>
+    </div>
+</section>
+</main>
+
+<footer class="site-footer">
+    <div class="container site-footer__inner">
+        <div class="footer-brand">
+            <a aria-label="УЗПТ Маяк" class="logo" href="https://enanro.github.io/relain-site/">
+                <img alt="Релайн — локальный просмотр"
+                    src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/logo-mayak.svg"
+                    width="200" height="60">
+            </a>
+        </div>
+
+        <div class="footer-col footer-addresses">
+            <div class="footer-contact-row footer-address-row">
+                <img src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/icons/icon-pin.webp" alt="" width="24" height="24">
+                <div class="footer-contact-text">
+                    <span class="footer-label">Адрес:</span>
+                    <p></p>
+                </div>
+            </div>
+            <div class="footer-contact-row footer-address-row">
+                <img src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/icons/icon-pin.webp" alt="" width="24" height="24">
+                <div class="footer-contact-text">
+                    <span class="footer-label">Адрес:</span>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-col footer-contacts">
+            <strong class="footer-title">Контакты:</strong>
+            <div class="footer-contact-row">
+                <img src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/icons/icon-phone.webp" alt="" width="24" height="24">
+                <div class="footer-contact-text">
+                    <span class="footer-label">Телефон:</span>
+                    <a href="tel:">
+                                            </a>
+                </div>
+            </div>
+            <div class="footer-contact-row">
+                <img src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/img/icons/icon-email.webp" alt="" width="24" height="24">
+                <div class="footer-contact-text">
+                    <span class="footer-label">E-mail:</span>
+                    <a href="mailto:"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-cta">
+            <button class="btn btn--orange" data-modal-open="" type="button">Перезвонить вам?</button>
+        </div>
+    </div>
+
+    <div class="container site-footer__bottom">
+        <p>© 2005–2026 Акционерное общество<br class="footer-copy-break"> Уральский завод полимерных технологий "МАЯК"</p>
+        <div class="footer-links">
+            <a href="">
+                Политика обработки персональных данных
+            </a>
+            <br>
+            <a href="">
+                Согласие на обработку персональных данных
+            </a>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Cookie Consent -->
+<div id="cookie-consent" class="cookie-consent" role="alert" aria-label="Использование cookie">
+    <div class="cookie-consent__inner">
+        <div class="cookie-consent__content">
+            <svg class="cookie-consent__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#F57214" />
+                <circle cx="9" cy="9" r="1.5" fill="#F57214" />
+                <circle cx="15" cy="9" r="1.5" fill="#F57214" />
+                <circle cx="12" cy="14" r="1.5" fill="#F57214" />
+                <circle cx="9" cy="15" r="1" fill="#F57214" />
+                <circle cx="15" cy="15" r="1" fill="#F57214" />
+            </svg>
+            <div class="cookie-consent__text">
+                <strong>Мы используем cookie</strong>
+                <p>Этот сайт использует файлы cookie для улучшения вашего опыта. Продолжая использовать сайт, вы соглашаетесь с нашей <a href="">Политикой обработки персональных данных</a>.</p>
+            </div>
+        </div>
+        <div class="cookie-consent__actions">
+            <button class="cookie-consent__btn cookie-consent__btn--primary" id="cookie-accept">Принять</button>
+            <a href="" class="cookie-consent__btn cookie-consent__btn--secondary" id="cookie-more">Подробнее</a>
+        </div>
+    </div>
+</div>
+
+<div aria-labelledby="request-modal-title" aria-modal="true"
+    class="modal" id="request-modal" role="dialog">
+    <div class="modal__overlay" data-modal-close=""></div>
+    <div class="modal__dialog">
+        <button aria-label="Закрыть форму" class="modal__close"
+            data-modal-close="" type="button">×</button>
+        <h2 id="request-modal-title">Получите КП, сроки поставки<br>и рекомендации по монтажу</h2>
+        <p>Оставьте заявку и получите коммерческое предложение в течение рабочего дня</p>
+                <p class="wpcf7-contact-form-not-found"><strong>Ошибка:</strong> Контактная форма не найдена.</p>    </div>
+</div>
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/relain-site/*"},{"not":{"href_matches":["/relain-site/wp-*.php","/relain-site/wp-admin/*","/relain-site/wp-content/uploads/*","/relain-site/wp-content/*","/relain-site/wp-content/plugins/*","/relain-site/wp-content/themes/reline/*","/relain-site/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script id="wp-hooks-js" src="https://enanro.github.io/relain-site/wp-includes/js/dist/hooks.min.js?ver=f0f188028580e8dc1255"></script>
+<script id="wp-i18n-js" src="https://enanro.github.io/relain-site/wp-includes/js/dist/i18n.min.js?ver=1dfe7db3940c23ea9216"></script>
+<script id="wp-i18n-js-after">
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+//# sourceURL=wp-i18n-js-after
+</script>
+<script id="swv-js" src="https://enanro.github.io/relain-site/wp-content/plugins/contact-form-7/includes/swv/js/index.js?ver=6.1.7"></script>
+<script id="contact-form-7-js-translations">
+( function( domain, translations ) {
+	var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+	localeData[""].domain = domain;
+	wp.i18n.setLocaleData( localeData, domain );
+} )( "contact-form-7", {"translation-revision-date":"2026-07-09 09:06:29+0000","generator":"GlotPress\/4.0.3","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","plural-forms":"nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);","lang":"ru"},"This contact form is placed in the wrong place.":["\u042d\u0442\u0430 \u043a\u043e\u043d\u0442\u0430\u043a\u0442\u043d\u0430\u044f \u0444\u043e\u0440\u043c\u0430 \u0440\u0430\u0437\u043c\u0435\u0449\u0435\u043d\u0430 \u0432 \u043d\u0435\u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u043e\u043c \u043c\u0435\u0441\u0442\u0435."],"Error:":["\u041e\u0448\u0438\u0431\u043a\u0430:"]}},"comment":{"reference":"includes\/js\/index.js"}} );
+//# sourceURL=contact-form-7-js-translations
+</script>
+<script id="contact-form-7-js-before">
+var wpcf7 = {
+    "api": {
+        "root": "https:\/\/enanro.github.io\/relain-site\/wp-json\/",
+        "namespace": "contact-form-7\/v1"
+    }
+};
+//# sourceURL=contact-form-7-js-before
+</script>
+<script id="contact-form-7-js" src="https://enanro.github.io/relain-site/wp-content/plugins/contact-form-7/includes/js/index.js?ver=6.1.7"></script>
+<script id="reline-main-js" src="https://enanro.github.io/relain-site/wp-content/themes/reline/assets/js/main.js?ver=1.0.5"></script>
+<script id="wp-emoji-settings" type="application/json">
+{"baseUrl":"https://s.w.org/images/core/emoji/17.0.2/72x72/","ext":".png","svgUrl":"https://s.w.org/images/core/emoji/17.0.2/svg/","svgExt":".svg","source":{"concatemoji":"https://enanro.github.io/relain-site/wp-includes/js/wp-emoji-release.min.js?ver=7.1.2"}}
+</script>
+<script type="module">
+/*! This file is auto-generated */
+var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof HTMLScriptElement))throw new Error("Element missing: "+e);const r=JSON.parse(t.text),s=(window._wpemojiSettings=r,"wpEmojiSettingsSupports"),o=["flag","emoji"];function i(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(s,JSON.stringify(t))}catch(e){}}function c(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0);const r=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);return t.every((e,t)=>e===r[t])}function p(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var n=e.getImageData(16,16,1,1);for(let e=0;e<n.data.length;e++)if(0!==n.data[e])return!1;return!0}function u(e,t,n,r){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!r(e,"\ud83e\u1fac8")}return!1}function f(e,t,n,r){let a;const s=(a="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):document.createElement("canvas")).getContext("2d",{willReadFrequently:!0}),o=(s.textBaseline="top",s.font="600 32px Arial",{});return e.forEach(e=>{o[e]=t(s,e,n,r)}),o}function a(e){var t=document.createElement("script");t.src=e,t.defer=!0,document.head.appendChild(t)}r.supports={everything:!0,everythingExceptFlag:!0},new Promise(t=>{let n=function(){try{var e=JSON.parse(sessionStorage.getItem(s));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(o),u.toString(),c.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"});const a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=e=>{i(n=e.data),a.terminate(),t(n)})}catch(e){}i(n=f(o,u,c,p))}t(n)}).then(e=>{for(const n in e)r.supports[n]=e[n],r.supports.everything=r.supports.everything&&r.supports[n],"flag"!==n&&(r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&r.supports[n]);var t;r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&!r.supports.flag,r.supports.everything||((t=r.source||{}).concatemoji?a(t.concatemoji):t.wpemoji&&t.twemoji&&(a(t.twemoji),a(t.wpemoji)))});
+//# sourceURL=https://enanro.github.io/relain-site/wp-includes/js/wp-emoji-loader.min.js
+</script>
+
+</body>
+
+</html>

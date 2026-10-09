@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 1484" fill="none" aria-hidden="true">
+  <defs>
+    <radialGradient id="ambient">
+      <stop offset="0" stop-color="#F57214" stop-opacity=".39"/>
+      <stop offset=".42" stop-color="#F57214" stop-opacity=".23"/>
+      <stop offset=".76" stop-color="#F58A3F" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#F58A3F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="530" cy="742" r="500" fill="url(#ambient)"/>
+</svg>
