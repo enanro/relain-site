@@ -120,48 +120,104 @@
         function drawAdhesiveFibers(layout, pull) {
             const bond = -layout.total / 2 + (85 + 38) * layout.scale;
             const stretch = layout.total * .56 * pull;
+            const cut = .04 + pull * .19;
             const gap = ctx.createLinearGradient(0, bond, 0, bond - stretch);
-            gap.addColorStop(0, 'rgba(122,53,166,.30)');
-            gap.addColorStop(.42, 'rgba(150,65,193,.12)');
-            gap.addColorStop(1, 'rgba(185,98,220,.20)');
+            gap.addColorStop(0, 'rgba(156,70,197,.92)');
+            gap.addColorStop(.25, 'rgba(168,77,210,.75)');
+            gap.addColorStop(.55, 'rgba(183,95,219,.56)');
+            gap.addColorStop(.85, 'rgba(195,103,227,.82)');
+            gap.addColorStop(1, 'rgba(222,142,243,.94)');
             const fiber = ctx.createLinearGradient(0, bond, 0, bond - stretch);
-            fiber.addColorStop(0, 'rgba(129,54,168,.9)');
-            fiber.addColorStop(.55, 'rgba(203,124,234,.76)');
-            fiber.addColorStop(1, 'rgba(145,64,178,.86)');
+            fiber.addColorStop(0, 'rgba(157,73,196,.58)');
+            fiber.addColorStop(.55, 'rgba(225,151,248,.80)');
+            fiber.addColorStop(1, 'rgba(173,82,207,.74)');
             ctx.save();
             ctx.globalAlpha = ease(pull / .22);
             ctx.fillStyle = gap;
             ctx.beginPath();
             for (let i = 0; i <= 42; i++) {
-                const u = .05 + i / 42 * .58;
+                const u = cut + i / 42 * (.63 - cut);
                 const x = -layout.length / 2 + u * layout.length;
                 const y = bond - stretch * peelProfile(u);
                 if (i === 0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
             }
             for (let i = 42; i >= 0; i--) {
-                const u = .05 + i / 42 * .58;
+                const u = .1 + i / 42 * .53;
                 ctx.lineTo(-layout.length / 2 + u * layout.length, bond);
             }
             ctx.closePath();
-            ctx.fill();
-            ctx.strokeStyle = fiber;
-            for (let i = 0; i < 88; i++) {
-                const u = .065 + i / 88 * .53;
+            // The dark spaces are pulled out of one continuous adhesive film.
+            // Their uneven, tapered contours avoid the look of drilled holes.
+            const openings = [];
+            const cavities = [
+                { u: .303, span: .025, depth: .66, lean: -.24 },
+                { u: .397, span: .032, depth: .76, lean: .17 },
+                { u: .497, span: .028, depth: .70, lean: -.12 }
+            ];
+            cavities.forEach(({ u, span, depth, lean }, i) => {
+                const reach = stretch * peelProfile(u);
+                if (reach < 16) return;
                 const x = -layout.length / 2 + u * layout.length;
-                const shift = (Math.sin(i * 2.73) * 17 + Math.sin(i * 6.29) * 9) * pull;
-                const targetU = Math.max(.05, Math.min(.62, u + shift / layout.length));
+                const half = span * layout.length;
+                const root = bond - Math.min(3.5, reach * .055);
+                const tip = bond - reach * depth;
+                const trace = () => {
+                    ctx.moveTo(x - half, root);
+                    ctx.bezierCurveTo(x - half * .93, bond - reach * .27,
+                        x - half * (.45 + lean), bond - reach * .62,
+                        x - half * .19, tip + reach * .055);
+                    ctx.bezierCurveTo(x + half * .11, tip - reach * .04,
+                        x + half * .52, tip + reach * .17,
+                        x + half * .67, bond - reach * .48);
+                    ctx.bezierCurveTo(x + half * (1.06 + lean), bond - reach * .22,
+                        x + half * .94, root - reach * .035,
+                        x + half, root);
+                    ctx.bezierCurveTo(x + half * .14, root - reach * .095,
+                        x - half * .42, root + reach * .02,
+                        x - half, root);
+                    ctx.closePath();
+                };
+                trace();
+                openings.push(trace);
+            });
+            ctx.fill('evenodd');
+            ctx.strokeStyle = 'rgba(234,164,245,.53)';
+            ctx.lineWidth = 1.15;
+            openings.forEach(trace => {
+                ctx.beginPath();
+                trace();
+                ctx.stroke();
+            });
+            ctx.strokeStyle = fiber;
+            for (let i = 0; i < 12; i++) {
+                const u = .145 + i / 12 * .43;
+                const x = -layout.length / 2 + u * layout.length;
+                const shift = (Math.sin(i * 2.73) * 24 + Math.sin(i * 6.29) * 14) * pull;
+                const targetU = Math.max(cut, Math.min(.62, u + shift / layout.length));
                 const reach = stretch * peelProfile(targetU);
                 if (reach < 1) continue;
-                ctx.globalAlpha = ease(pull / .2) * (.24 + (i % 7) * .085);
-                ctx.lineWidth = .45 + (i % 9 === 0 ? .85 : (i % 4) * .11);
+                ctx.globalAlpha = ease(pull / .2) * (.12 + (i % 5) * .04);
+                ctx.lineWidth = .45 + (i % 3) * .12;
                 ctx.beginPath();
                 ctx.moveTo(x, bond + 1);
                 ctx.bezierCurveTo(x - shift * .26, bond - reach * .29,
                     x + shift * 1.14, bond - reach * .71,
-                    x + shift, bond - reach + 1);
+                    -layout.length / 2 + targetU * layout.length, bond - reach + 1);
                 ctx.stroke();
             }
+            ctx.globalAlpha = ease(pull / .22) * .62;
+            ctx.strokeStyle = '#d390ea';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            for (let i = 0; i <= 36; i++) {
+                const u = cut + i / 36 * (.61 - cut);
+                const x = -layout.length / 2 + u * layout.length;
+                const y = bond - stretch * peelProfile(u) + 1;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
             ctx.restore();
         }
 
@@ -183,12 +239,22 @@
                     const count = Math.ceil(layout.length / 4.5);
                     const sourceWidth = 1672 / count;
                     const pieceWidth = layout.length / count;
-                    for (let i = 0; i < count; i++) {
+                    const first = Math.floor((.04 + peel * .19) * count);
+                    for (let i = first; i < count; i++) {
                         const u = (i + .5) / count;
                         const shift = layout.total * .56 * peel * peelProfile(u);
                         ctx.drawImage(strip, i * sourceWidth, band.top, sourceWidth, band.bottom - band.top,
                             -layout.length / 2 + i * pieceWidth, y - shift, pieceWidth + .45, bandHeight + .65);
                     }
+                    const capU = (first + .5) / count;
+                    const capX = -layout.length / 2 + first * pieceWidth;
+                    const capShift = layout.total * .56 * peel * peelProfile(capU);
+                    ctx.strokeStyle = band.name === 'polymer' ? 'rgba(240,239,236,.54)' : 'rgba(255,175,215,.66)';
+                    ctx.lineWidth = 1.2;
+                    ctx.beginPath();
+                    ctx.moveTo(capX, y - capShift);
+                    ctx.lineTo(capX, y + bandHeight - capShift);
+                    ctx.stroke();
                     return;
                 }
                 let offset = 0;
