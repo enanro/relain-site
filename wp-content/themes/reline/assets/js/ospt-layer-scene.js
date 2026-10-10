@@ -75,7 +75,8 @@
             const verticalMask = videoContext.createLinearGradient(0, 0, 0, videoSurface.height);
             verticalMask.addColorStop(0, 'rgba(0,0,0,0)');
             verticalMask.addColorStop(.12, 'rgba(0,0,0,1)');
-            verticalMask.addColorStop(.82, 'rgba(0,0,0,1)');
+            verticalMask.addColorStop(.76, 'rgba(0,0,0,1)');
+            verticalMask.addColorStop(.88, 'rgba(0,0,0,0)');
             verticalMask.addColorStop(1, 'rgba(0,0,0,0)');
             videoContext.fillStyle = verticalMask;
             videoContext.fillRect(0, 0, videoSurface.width, videoSurface.height);
