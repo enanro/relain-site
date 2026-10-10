@@ -248,6 +248,34 @@ body.page-template-template-ospt {
     overflow: visible;
     isolation: isolate;
 }
+.ospt-compare__transition {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    background: #000;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .22s ease, visibility .22s ease;
+}
+.ospt-compare__transition-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.ospt-compare[data-layer-video="forward"] .ospt-compare__transition,
+.ospt-compare[data-layer-video="reverse"] .ospt-compare__transition {
+    opacity: 1;
+    visibility: visible;
+}
+.ospt-compare[data-layer-video="forward"] .ospt-compare__cutaway,
+.ospt-compare[data-layer-video="reverse"] .ospt-compare__cutaway {
+    opacity: 0;
+    pointer-events: none;
+}
 .ospt-compare.is-sequenced[data-layers-transition="true"] .ospt-compare__visual {
     clip-path: inset(-100vh 0 -100vh -100vw);
 }

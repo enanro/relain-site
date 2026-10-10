@@ -82,7 +82,7 @@
             if (scheduleFrame && !frame) frame = requestAnimationFrame(tick);
         }
 
-        function finish() {
+        function finish(notify = true) {
             phase = '';
             delete section.dataset[phaseKey];
             focus.setAttribute('aria-hidden', 'true');
@@ -91,12 +91,21 @@
             frame = 0;
             if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
             onPhaseChange();
-            onFinished();
+            if (notify) onFinished();
         }
 
         function start() {
             if (!ctx || phase) return;
             setPhase('prepare');
+        }
+
+        function startAtEffect() {
+            if (!ctx || phase) return;
+            setPhase('separate');
+        }
+
+        function stopForTransition() {
+            if (phase) finish(false);
         }
 
         function exit(immediate = false) {
@@ -500,7 +509,7 @@
                 && y <= settings.flatTop + settings.stripLength + 8;
         }
 
-        return { start, exit, reset, hitTest, get phase() { return phase; } };
+        return { start, startAtEffect, stopForTransition, exit, reset, hitTest, get phase() { return phase; } };
     }
 
     window.RelineOsptBarrier = (options) => createLayerAnimation({ ...options, mode: 'barrier' });
