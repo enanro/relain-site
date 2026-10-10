@@ -12,14 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const barrierWindow = section.querySelector('.ospt-compare__barrier-window');
     const adhesiveWindow = section.querySelector('.ospt-compare__adhesive-window');
     const layerAxis = section.querySelector('.ospt-compare__layer-axis');
-    const polymerFocus = section.querySelector('.ospt-compare__polymer-focus');
-    const polymerCanvas = section.querySelector('.ospt-compare__polymer-canvas');
-    const barrierFocus = section.querySelector('.ospt-compare__barrier-focus');
-    const barrierCanvas = section.querySelector('.ospt-compare__barrier-canvas');
-    const adhesiveFocus = section.querySelector('.ospt-compare__adhesive-focus');
-    const adhesiveCanvas = section.querySelector('.ospt-compare__adhesive-canvas');
-    const transition = section.querySelector('.ospt-compare__transition');
-    const transitionVideo = transition?.querySelector('video');
+    const sceneCanvas = section.querySelector('.ospt-compare__layer-scene');
     const soilLabels = section.querySelector('.ospt-compare__soil-labels');
     const mobileModel = section.querySelector('.ospt-compare__mobile-final-visual');
     const layerTriggers = section.querySelectorAll('[data-layer-target]');
@@ -44,65 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let previewLayer = '';
     let returnFocus = null;
     let pendingFocusEvent = null;
-    let transitionState = '';
-    let playbackId = 0;
-    const polymer = window.RelineOsptPolymer({
-        section, model, layerAxis, focus: polymerFocus, canvas: polymerCanvas, visual,
-        onPhaseChange: () => syncLayerInteraction(),
-        onFinished: () => {
-            selectedLayer = '';
-            previewLayer = '';
-            syncLayerInteraction();
-            if (pendingFocusEvent?.detail === 0 && returnFocus && !returnFocus.closest('[aria-hidden="true"]')) {
-                returnFocus.focus({ preventScroll: true });
-            }
-            pendingFocusEvent = null;
-        }
+    const scene = window.RelineOsptLayerScene({
+        section, canvas: sceneCanvas,
+        onFinished: () => completeLayerExit()
     });
-    const barrier = window.RelineOsptBarrier({
-        section, model, layerAxis, focus: barrierFocus, canvas: barrierCanvas, visual,
-        onPhaseChange: () => syncLayerInteraction(),
-        onFinished: () => {
-            selectedLayer = '';
-            previewLayer = '';
-            syncLayerInteraction();
-            if (pendingFocusEvent?.detail === 0 && returnFocus && !returnFocus.closest('[aria-hidden="true"]')) {
-                returnFocus.focus({ preventScroll: true });
-            }
-            pendingFocusEvent = null;
-        }
-    });
-    const adhesive = window.RelineOsptAdhesive({
-        section, model, layerAxis, focus: adhesiveFocus, canvas: adhesiveCanvas, visual,
-        onPhaseChange: () => syncLayerInteraction(),
-        onFinished: () => {
-            selectedLayer = '';
-            previewLayer = '';
-            syncLayerInteraction();
-            if (pendingFocusEvent?.detail === 0 && returnFocus && !returnFocus.closest('[aria-hidden="true"]')) {
-                returnFocus.focus({ preventScroll: true });
-            }
-            pendingFocusEvent = null;
-        }
-    });
-    const activeAnimation = () => polymer.phase ? polymer : barrier.phase ? barrier : adhesive.phase ? adhesive : null;
-
-    function stopTransition() {
-        playbackId += 1;
-        transitionState = '';
-        delete section.dataset.layerVideo;
-        if (transitionVideo) {
-            transitionVideo.pause();
-            transitionVideo.removeAttribute('src');
-            transitionVideo.load();
-        }
-        polymer.stopForTransition();
-        barrier.stopForTransition();
-        adhesive.stopForTransition();
-    }
+    const activeAnimation = () => scene.phase ? scene : null;
 
     function completeLayerExit() {
-        stopTransition();
+        scene.reset();
         selectedLayer = '';
         previewLayer = '';
         syncLayerInteraction();
@@ -112,63 +54,22 @@ document.addEventListener('DOMContentLoaded', () => {
         pendingFocusEvent = null;
     }
 
-    function playTransition(direction, startAt = 0) {
-        if (!transitionVideo) return false;
-        const id = ++playbackId;
-        transitionState = direction;
-        section.dataset.layerVideo = direction;
-        transitionVideo.pause();
-        transitionVideo.src = transition.dataset[direction === 'forward' ? 'forwardSrc' : 'reverseSrc'];
-        transitionVideo.load();
-        const startPlayback = () => {
-            if (id !== playbackId) return;
-            if (startAt && Number.isFinite(transitionVideo.duration)) {
-                transitionVideo.currentTime = Math.min(startAt, Math.max(0, transitionVideo.duration - .08));
-            }
-            const playback = transitionVideo.play();
-            if (playback?.catch) playback.catch(() => {
-                if (id === playbackId) transitionVideo.dispatchEvent(new Event('ended'));
-            });
-        };
-        if (transitionVideo.readyState >= 2) startPlayback();
-        else transitionVideo.addEventListener('loadeddata', startPlayback, { once: true });
-        return true;
-    }
-
-    transitionVideo?.addEventListener('ended', () => {
-        if (transitionState === 'forward') {
-            transitionState = 'detail';
-            const animation = { polymer, barrier, adhesive }[selectedLayer];
-            animation?.startAtEffect();
-            section.dataset.layerVideo = 'detail';
-        } else if (transitionState === 'reverse') {
-            completeLayerExit();
-        }
-    });
-
     function finishLayerExit(event, immediate = false) {
         pendingFocusEvent = event || null;
         if (immediate || section.classList.contains('is-linear')) {
             completeLayerExit();
             return;
         }
-        if (transitionState === 'reverse') return;
-        if (transitionState === 'forward') {
-            const elapsed = transitionVideo.currentTime;
-            playTransition('reverse', Math.max(0, (transitionVideo.duration || 6.6) - elapsed));
-            return;
-        }
         const animation = activeAnimation();
         if (animation) {
-            animation.stopForTransition();
-            if (!playTransition('reverse')) completeLayerExit();
+            animation.exit();
             return;
         }
         completeLayerExit();
     }
 
     function layerAtPointer(event) {
-        if (activeAnimation() || transitionState) return '';
+        if (activeAnimation()) return '';
         if (section.classList.contains('is-sequenced') && section.dataset.activeScreen !== 'layers') return '';
         const matrix = layerAxis.getScreenCTM();
         if (!matrix) return '';
@@ -186,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function syncLayerInteraction() {
-        const active = activeAnimation() || transitionState ? '' : previewLayer || selectedLayer;
+        const active = activeAnimation() ? '' : previewLayer || selectedLayer;
         if (active) section.dataset.activeLayer = active;
         else delete section.dataset.activeLayer;
         if (selectedLayer) section.dataset.selectedLayer = selectedLayer;
@@ -211,19 +112,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function selectLayer(layer, trigger, keyboard) {
-        if (transitionState || activeAnimation()) return;
+        if (activeAnimation()) return;
         selectedLayer = layer;
         previewLayer = '';
         returnFocus = trigger?.tagName === 'BUTTON' ? trigger : section.querySelector(`.ospt-compare__layer-choice[data-layer-target="${layer}"]`);
         syncLayerInteraction();
-        if (!section.classList.contains('is-linear')) playTransition('forward');
+        if (!section.classList.contains('is-linear')) scene.start(layer);
         if (keyboard) detailBack.focus({ preventScroll: true });
     }
 
     layerTriggers.forEach((trigger) => {
         trigger.addEventListener('pointerenter', () => {
             if (section.classList.contains('is-sequenced') && section.dataset.activeScreen !== 'layers') return;
-            if (activeAnimation() || transitionState) return;
+            if (activeAnimation()) return;
             previewLayer = trigger.dataset.layerTarget;
             syncLayerInteraction();
         });
@@ -235,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (trigger.tagName === 'BUTTON') {
             trigger.addEventListener('focus', () => {
-                if (activeAnimation() || transitionState) return;
+                if (activeAnimation()) return;
                 previewLayer = trigger.dataset.layerTarget;
                 syncLayerInteraction();
             });
@@ -254,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     model.addEventListener('pointermove', (event) => {
-        if (activeAnimation() || transitionState) return;
+        if (activeAnimation()) return;
         const next = layerAtPointer(event);
         model.classList.toggle('is-layer-hot', Boolean(next));
         if (next === previewLayer) return;
@@ -270,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     model.addEventListener('click', (event) => {
         if (section.classList.contains('is-sequenced') && section.dataset.activeScreen !== 'layers') return;
         const animation = activeAnimation();
-        if (transitionState === 'forward' || transitionState === 'reverse') {
+        if (scene.phase === 'enter' || scene.phase === 'reverse') {
             event.stopPropagation();
             return;
         }
@@ -342,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
         section.style.setProperty('--glow-opacity', smooth(.62, .95, progress).toFixed(3));
 
         const activeScreen = sequenceProgress >= .88 ? 'layers' : progress >= .72 ? 'middle' : 'ground';
-        if (activeScreen !== 'layers' && (activeAnimation() || transitionState)) finishLayerExit(undefined, true);
+        if (activeScreen !== 'layers' && activeAnimation()) finishLayerExit(undefined, true);
         section.dataset.activeScreen = activeScreen;
         section.dataset.layersTransition = String(sequenceProgress >= .58);
         section.dataset.sequenceComplete = String(activeScreen === 'middle' && progress >= .8);
@@ -351,12 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         layersCopy.setAttribute('aria-hidden', String(activeScreen !== 'layers'));
         cutaway.setAttribute('aria-hidden', String(activeScreen !== 'layers'));
         cutaway.inert = activeScreen !== 'layers';
-        model.setAttribute('aria-hidden', String(
-            Boolean(transitionState && transitionState !== 'detail')
-            || ['end', 'unroll', 'water', 'water-out', 'reroll', 'end-back'].includes(polymer.phase)
-            || ['end', 'unroll', 'separate', 'molecules', 'molecules-out', 'cover-return', 'reroll', 'end-back'].includes(barrier.phase)
-            || ['end', 'unroll', 'separate', 'molecules', 'molecules-out', 'cover-return', 'reroll', 'end-back'].includes(adhesive.phase)
-        ));
+        model.setAttribute('aria-hidden', String(Boolean(scene.phase)));
         groundCopy.inert = activeScreen !== 'ground';
         finalCopy.inert = activeScreen !== 'middle';
         layersCopy.inert = activeScreen !== 'layers';
@@ -380,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         section.classList.toggle('is-linear', linear);
         section.classList.toggle('is-sequenced', !linear);
         if (linear) {
-            if (activeAnimation() || transitionState) finishLayerExit(undefined, true);
+            if (activeAnimation()) finishLayerExit(undefined, true);
             mobileModel.setAttribute('aria-hidden', 'false');
             section.dataset.sequenceComplete = 'true';
             groundCopy.inert = false;
