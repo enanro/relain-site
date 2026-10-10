@@ -78,6 +78,7 @@ body.page-template-template-ospt {
     transform: translateY(-50%);
     pointer-events: none;
     will-change: opacity;
+    transition: opacity .38s ease;
 }
 .ospt-compare__callout {
     position: absolute;
@@ -170,6 +171,7 @@ body.page-template-template-ospt {
 .ospt-compare__layers-panel { position: relative; display: grid; min-height: 204px; }
 .ospt-compare__layers-list,
 .ospt-compare__layer-detail { grid-area: 1 / 1; transition: opacity .28s ease, transform .35s ease; }
+.ospt-compare__layers-list { transition-delay: .18s; }
 .ospt-compare__layer-detail {
     display: flex;
     flex-direction: column;
@@ -182,8 +184,8 @@ body.page-template-template-ospt {
     transform: translateY(12px);
     pointer-events: none;
 }
-.ospt-compare[data-selected-layer] .ospt-compare__layers-list { opacity: 0; transform: translateY(-10px); pointer-events: none; }
-.ospt-compare[data-selected-layer] .ospt-compare__layer-detail { opacity: 1; transform: none; pointer-events: auto; }
+.ospt-compare[data-selected-layer] .ospt-compare__layers-list { opacity: 0; transform: translateY(-10px); pointer-events: none; transition-delay: 0s; }
+.ospt-compare[data-selected-layer] .ospt-compare__layer-detail { opacity: 1; transform: none; pointer-events: auto; transition-delay: .18s; }
 .ospt-compare__detail-kicker { margin: 0 0 8px; color: #f5ad7a; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .ospt-compare__detail-title { margin: 0 0 10px; color: #f5f6f6; font-size: clamp(19px, 1.5vw, 23px); line-height: 1.25; }
 .ospt-compare__detail-text { margin: 0; color: #c4cbce; font-size: 15px; line-height: 1.5; }
@@ -264,11 +266,13 @@ body.page-template-template-ospt {
     opacity: 1;
     visibility: visible;
 }
-.ospt-compare[data-layer-scene] .ospt-compare__cutaway,
-.ospt-compare[data-layer-scene] .ospt-compare__model {
+.ospt-compare[data-layer-scene] .ospt-compare__cutaway {
     opacity: 0;
     pointer-events: none;
 }
+.ospt-compare[data-layer-scene] .ospt-compare__barrier-window,
+.ospt-compare[data-layer-scene] .ospt-compare__adhesive-window { width: 0; }
+.ospt-compare.is-sequenced[data-layer-scene] .ospt-compare__glow { opacity: 0; }
 .ospt-compare.is-sequenced[data-layers-transition="true"] .ospt-compare__visual {
     clip-path: inset(-100vh 0 -100vh -100vw);
 }
