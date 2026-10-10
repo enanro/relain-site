@@ -329,6 +329,10 @@ body.page-template-template-ospt {
 .ospt-compare[data-active-layer="adhesive"] .ospt-compare__adhesive-window,
 .ospt-compare[data-active-layer="adhesive"] .ospt-compare__adhesive-body { width: 191px; }
 .ospt-compare[data-active-layer="adhesive"] .ospt-compare__adhesive-highlight { width: 179px; }
+.ospt-compare.is-sequenced[data-layer-scene] .ospt-compare__polymer-window {
+    width: 285px;
+    transition-duration: .22s;
+}
 
 .ospt-compare__polymer-focus {
     position: absolute;
