@@ -35,6 +35,8 @@
         let height = 0;
         let ratio = 1;
         let fromForwardAt = 0;
+        let waterStartedAt = 0;
+        let lastLayout = null;
 
         const available = () => strip.complete && strip.naturalWidth > 0;
         function resize() {
@@ -108,10 +110,12 @@
             };
         }
 
-        function drawRibbon(orientation = 0, separation = 0) {
+        function drawRibbon(orientation = 0, separation = 0, tilt = 0) {
             backdrop();
             if (!available()) return null;
             const layout = ribbonLayout(orientation);
+            layout.angle += tilt;
+            lastLayout = layout;
             ctx.save();
             ctx.translate(layout.x, layout.y);
             ctx.rotate(layout.angle);
@@ -153,27 +157,69 @@
         }
 
         function drawWater(now, layout, alpha) {
-            if (!layout) return;
-            const blackTop = height / 2 - layout.total / 2;
+            if (!layout || alpha <= 0) return;
+            const cycle = (Math.max(0, now - waterStartedAt) / 6500) % 1;
+            if (cycle >= .87) return;
+            const left = -layout.length / 2;
+            const right = layout.length / 2;
+            const blackTop = -layout.total / 2;
             const blackHeight = 85 * layout.scale;
-            const cycle = (now / 6200) % 1;
-            for (let i = 0; i < 24; i++) {
-                const seed = (i * .618034) % 1;
-                const age = (cycle - seed + 1) % 1;
-                if (age > .88) continue;
-                const originX = width * (.08 + .84 * ((i * .381966) % 1));
-                const direction = i % 2 ? 1 : -1;
-                const roll = ease((age - .34) / .5);
-                const x = originX + direction * roll * width * (.28 + (i % 4) * .07);
-                if (x < -30 || x > width + 30) continue;
-                const landing = blackTop + blackHeight * (.28 + .3 * ((i * .27) % 1));
-                const y = age < .16 ? landing - (1 - ease(age / .16)) * 55 : landing + roll * blackHeight * .55;
-                const merge = ease((age - .18) / .25);
-                const w = 5 + (i % 5) * 2 + merge * (12 + (i % 4) * 4);
-                const h = Math.max(5, w * (.7 - .25 * roll));
-                const opacity = alpha * ease(age / .1) * (1 - ease((age - .72) / .16));
-                droplet(x, y, w, h, opacity);
+            const centers = [-.74, -.38, -.02, .36, .73].map(fraction => fraction * right);
+            ctx.save();
+            ctx.translate(layout.x, layout.y);
+            ctx.rotate(layout.angle);
+
+            // Falling droplets stay above the same polymer surface until they land.
+            for (let i = 0; i < 36; i++) {
+                const begin = .015 + (i % 12) * .016;
+                const end = begin + .095;
+                if (cycle < begin || cycle >= end) continue;
+                const fall = ease((cycle - begin) / (end - begin));
+                const x = left + layout.length * (.08 + .84 * ((i * .381966) % 1));
+                const landingY = blackTop + blackHeight * (.25 + .3 * ((i * .273) % 1));
+                const y = landingY - (1 - fall) * (45 + (i % 4) * 12);
+                droplet(x, y, 4 + i % 4, 6 + i % 3, alpha * ease((cycle - begin) / .025));
             }
+
+            ctx.beginPath();
+            ctx.rect(left, blackTop, layout.length, blackHeight);
+            ctx.clip();
+            const collect = ease((cycle - .17) / .28);
+            const drain = ease((cycle - .51) / .32);
+
+            // Small drops join five shallow puddles before the water rolls away.
+            for (let i = 0; i < 36; i++) {
+                const landing = .09 + (i % 12) * .016;
+                if (cycle < landing) continue;
+                const group = i % centers.length;
+                const initialX = left + layout.length * (.08 + .84 * ((i * .381966) % 1));
+                const baseX = initialX + (centers[group] - initialX) * collect * .8;
+                const edge = group % 2 ? left - 38 : right + 38;
+                const x = baseX + (edge - baseX) * drain;
+                const y = blackTop + blackHeight * (.3 + .16 * ((i * .273) % 1))
+                    + Math.sin(now / 120 + i) * 1.2 * collect * (1 - drain);
+                const size = 5 + i % 5 + collect * (4 + i % 3);
+                droplet(x, y, size, size * .55, alpha);
+            }
+            if (cycle >= .2) {
+                centers.forEach((center, i) => {
+                    const edge = i % 2 ? left - 55 : right + 55;
+                    const x = center + (edge - center) * drain;
+                    const quiver = Math.sin(now / 95 + i * 2) * (1 - drain);
+                    const y = blackTop + blackHeight * (.48 + .05 * quiver);
+                    const size = (18 + i * 3) * (.55 + collect * .45) * (1 + .07 * quiver);
+                    if (drain > .08 && drain < 1) {
+                        ctx.strokeStyle = `rgba(223,238,238,${alpha * .24})`;
+                        ctx.lineWidth = Math.max(2, size * .16);
+                        ctx.beginPath();
+                        ctx.moveTo(x - Math.sign(edge - center) * Math.min(36, drain * 60), y);
+                        ctx.lineTo(x, y);
+                        ctx.stroke();
+                    }
+                    droplet(x, y, size, Math.max(6, size * .31), alpha * ease((cycle - .19) / .1));
+                });
+            }
+            ctx.restore();
         }
 
         function drawMolecule(x, y, size, rotation, alpha) {
@@ -249,8 +295,9 @@
         function drawEffect(now, progress = 1, alpha = 1) {
             const orientation = layer === 'adhesive' ? progress : 0;
             const separation = layer === 'polymer' ? 0 : progress;
-            const layout = drawRibbon(orientation, separation);
-            if (layer === 'polymer') drawWater(now, layout, alpha);
+            const tilt = layer === 'polymer' ? Math.PI / 15 * progress : 0;
+            const layout = drawRibbon(orientation, separation, tilt);
+            if (layer === 'polymer') drawWater(now, layout, alpha * ease((progress - .45) / .45));
             else if (layer === 'barrier') drawBarrier(now, layout, alpha * progress);
             else drawAdhesion(now, layout, alpha * progress);
         }
@@ -258,6 +305,7 @@
         function setPhase(next) {
             phase = next;
             phaseAt = performance.now();
+            if (next === 'effect-in' && layer === 'polymer') waterStartedAt = phaseAt + 280;
             section.dataset.layerScene = next;
             if (!frame) frame = requestAnimationFrame(tick);
         }
@@ -287,12 +335,12 @@
         }
 
         function exit() {
-            if (!phase || phase === 'reverse' || phase === 'fade-out') return;
+            if (!phase || ['reverse', 'fade-out', 'water-out', 'effect-out'].includes(phase)) return;
             if (phase === 'enter') {
                 const duration = videos.forward.duration || 6.6;
                 beginReverse(Math.max(0, duration - videos.forward.currentTime));
             } else {
-                setPhase('effect-out');
+                setPhase(layer === 'polymer' ? 'water-out' : 'effect-out');
             }
         }
 
@@ -302,6 +350,7 @@
             canvas.style.opacity = '';
             phase = '';
             layer = '';
+            lastLayout = null;
             delete section.dataset.layerScene;
             if (frame) cancelAnimationFrame(frame);
             frame = 0;
@@ -330,9 +379,12 @@
                 if (progress >= 1) setPhase('effect');
             } else if (phase === 'effect') {
                 drawEffect(now);
+            } else if (phase === 'water-out') {
+                drawEffect(now, 1, 1 - ease(elapsed / 300));
+                if (elapsed >= 300) setPhase('effect-out');
             } else if (phase === 'effect-out') {
                 const progress = 1 - ease(elapsed / 650);
-                drawEffect(now, progress, Math.min(1, progress * 2));
+                drawEffect(now, progress, layer === 'polymer' ? 0 : Math.min(1, progress * 2));
                 if (progress <= 0) beginReverse();
             } else if (phase === 'reverse') {
                 drawVideo(videos.reverse);
@@ -354,8 +406,13 @@
             const rect = canvas.getBoundingClientRect();
             const x = event.clientX - rect.left;
             const y = event.clientY - rect.top;
-            if (layer === 'adhesive') return x > rect.width * .15 && x < rect.width * .56;
-            return Math.abs(y - rect.height / 2) < Math.min(180, rect.width * .17);
+            if (!lastLayout) return false;
+            const dx = x - lastLayout.x;
+            const dy = y - lastLayout.y;
+            const along = Math.cos(lastLayout.angle) * dx + Math.sin(lastLayout.angle) * dy;
+            const across = -Math.sin(lastLayout.angle) * dx + Math.cos(lastLayout.angle) * dy;
+            return Math.abs(along) <= lastLayout.length / 2 + 8
+                && Math.abs(across) <= lastLayout.total / 2 + 12;
         }
 
         return { start, exit, reset: () => stop(false), hitTest, get phase() { return phase; } };
