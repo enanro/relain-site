@@ -36,6 +36,9 @@
         let ratio = 1;
         let fromForwardAt = 0;
         let waterStartedAt = 0;
+        let adhesionStartedAt = 0;
+        let adhesionPull = 0;
+        let adhesionExitPull = 0;
         let lastLayout = null;
 
         const available = () => strip.complete && strip.naturalWidth > 0;
@@ -110,26 +113,96 @@
             };
         }
 
-        function drawRibbon(orientation = 0, separation = 0, tilt = 0) {
+        function peelProfile(position) {
+            return 1 - ease((position - .08) / .55);
+        }
+
+        function drawAdhesiveFibers(layout, pull) {
+            const bond = -layout.total / 2 + (85 + 38) * layout.scale;
+            const stretch = layout.total * .56 * pull;
+            const gap = ctx.createLinearGradient(0, bond, 0, bond - stretch);
+            gap.addColorStop(0, 'rgba(122,53,166,.30)');
+            gap.addColorStop(.42, 'rgba(150,65,193,.12)');
+            gap.addColorStop(1, 'rgba(185,98,220,.20)');
+            const fiber = ctx.createLinearGradient(0, bond, 0, bond - stretch);
+            fiber.addColorStop(0, 'rgba(129,54,168,.9)');
+            fiber.addColorStop(.55, 'rgba(203,124,234,.76)');
+            fiber.addColorStop(1, 'rgba(145,64,178,.86)');
+            ctx.save();
+            ctx.globalAlpha = ease(pull / .22);
+            ctx.fillStyle = gap;
+            ctx.beginPath();
+            for (let i = 0; i <= 42; i++) {
+                const u = .05 + i / 42 * .58;
+                const x = -layout.length / 2 + u * layout.length;
+                const y = bond - stretch * peelProfile(u);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            for (let i = 42; i >= 0; i--) {
+                const u = .05 + i / 42 * .58;
+                ctx.lineTo(-layout.length / 2 + u * layout.length, bond);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.strokeStyle = fiber;
+            for (let i = 0; i < 88; i++) {
+                const u = .065 + i / 88 * .53;
+                const x = -layout.length / 2 + u * layout.length;
+                const shift = (Math.sin(i * 2.73) * 17 + Math.sin(i * 6.29) * 9) * pull;
+                const targetU = Math.max(.05, Math.min(.62, u + shift / layout.length));
+                const reach = stretch * peelProfile(targetU);
+                if (reach < 1) continue;
+                ctx.globalAlpha = ease(pull / .2) * (.24 + (i % 7) * .085);
+                ctx.lineWidth = .45 + (i % 9 === 0 ? .85 : (i % 4) * .11);
+                ctx.beginPath();
+                ctx.moveTo(x, bond + 1);
+                ctx.bezierCurveTo(x - shift * .26, bond - reach * .29,
+                    x + shift * 1.14, bond - reach * .71,
+                    x + shift, bond - reach + 1);
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        function drawRibbon(orientation = 0, separation = 0, tilt = 0, peel = 0) {
             backdrop();
             if (!available()) return null;
             const layout = ribbonLayout(orientation);
             layout.angle += tilt;
+            layout.peel = peel;
             lastLayout = layout;
             ctx.save();
             ctx.translate(layout.x, layout.y);
             ctx.rotate(layout.angle);
             const start = -layout.total / 2;
-            bands.forEach((band) => {
+            const drawBand = (band, warped = false) => {
                 const bandHeight = (band.bottom - band.top) * layout.scale;
                 const y = start + (band.top - bands[0].top) * layout.scale;
+                if (warped) {
+                    const count = Math.ceil(layout.length / 4.5);
+                    const sourceWidth = 1672 / count;
+                    const pieceWidth = layout.length / count;
+                    for (let i = 0; i < count; i++) {
+                        const u = (i + .5) / count;
+                        const shift = layout.total * .56 * peel * peelProfile(u);
+                        ctx.drawImage(strip, i * sourceWidth, band.top, sourceWidth, band.bottom - band.top,
+                            -layout.length / 2 + i * pieceWidth, y - shift, pieceWidth + .45, bandHeight + .65);
+                    }
+                    return;
+                }
                 let offset = 0;
                 if (layer === 'barrier' && band.name === 'polymer') offset = -height * .32 * ease(separation);
-                if (layer === 'adhesive' && band.name === 'polymer') offset = -width * .25 * ease(separation);
-                if (layer === 'adhesive' && band.name === 'barrier') offset = -width * .13 * ease(separation);
                 ctx.drawImage(strip, 0, band.top, 1672, band.bottom - band.top,
                     -layout.length / 2, y + offset, layout.length, bandHeight + .7);
-            });
+            };
+            if (layer === 'adhesive' && orientation >= .999 && peel > .001) {
+                drawBand(bands[3]);
+                drawBand(bands[2]);
+                drawAdhesiveFibers(layout, peel);
+                drawBand(bands[1], true);
+                drawBand(bands[0], true);
+            } else bands.forEach((band) => drawBand(band));
             ctx.restore();
             return layout;
         }
@@ -311,52 +384,62 @@
             }
         }
 
-        function drawAdhesion(now, layout, alpha) {
-            if (!layout) return;
-            const pulse = .5 + .5 * Math.sin(now / 330);
-            const violetEdge = layout.x - (-layout.total / 2 + (85 + 38) * layout.scale);
-            const pinkEdge = violetEdge + width * .13;
+        function adhesionTiming(now) {
+            const time = Math.max(0, now - adhesionStartedAt) % 5500;
+            const pull = time < 500 ? 0 : time < 2000 ? ease((time - 500) / 1500)
+                : time < 3000 ? 1 : time < 5000 ? 1 - ease((time - 3000) / 2000) : 0;
+            const arrows = ease((time - 500) / 450) * (1 - ease((time - 3150) / 850));
+            return { pull, arrows };
+        }
+
+        function drawAdhesion(layout, pull, arrows) {
+            if (!layout || arrows <= 0) return;
+            const right = layout.x + layout.total / 2 + layout.total * .56 * pull;
             ctx.save();
-            ctx.globalAlpha = alpha;
-            for (let i = -5; i <= 5; i++) {
-                const y = layout.y + i * layout.length / 12;
-                ctx.strokeStyle = `rgba(225,174,244,${.32 + .35 * pulse})`;
-                ctx.lineWidth = 1.3;
+            ctx.globalAlpha = arrows;
+            ctx.shadowColor = 'rgba(245,240,250,.64)';
+            ctx.shadowBlur = 14;
+            for (let i = 0; i < 3; i++) {
+                const x = right + 9 + i * 25;
+                const y = height * (.32 - i * .055) - pull * 13;
+                const length = 43 + i * 10;
+                const fill = ctx.createLinearGradient(x, y, x + 23, y - length);
+                fill.addColorStop(0, 'rgba(184,182,188,.22)');
+                fill.addColorStop(.48, 'rgba(242,240,244,.62)');
+                fill.addColorStop(1, 'rgba(255,255,255,.94)');
+                ctx.fillStyle = fill;
                 ctx.beginPath();
-                ctx.moveTo(violetEdge - 2, y);
-                ctx.bezierCurveTo(violetEdge + 25 + 5 * pulse, y - 8, pinkEdge - 24, y + 8, pinkEdge + 2, y);
-                ctx.stroke();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + 8, y - length * .65);
+                ctx.lineTo(x + 1, y - length * .67);
+                ctx.lineTo(x + 23, y - length);
+                ctx.lineTo(x + 34, y - length * .65);
+                ctx.lineTo(x + 26, y - length * .68);
+                ctx.lineTo(x + 18, y + 1);
+                ctx.closePath();
+                ctx.fill();
             }
-            ctx.fillStyle = '#eed5fa';
-            ctx.font = '600 12px Arial, sans-serif';
-            ctx.fillText('СЦЕПЛЕНИЕ СОХРАНЯЕТСЯ', pinkEdge + 12, layout.y - layout.length * .36);
-            ctx.strokeStyle = '#d6a6ed';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(pinkEdge + 10, layout.y - 35);
-            ctx.lineTo(pinkEdge + 80 + 16 * pulse, layout.y - 35);
-            ctx.moveTo(pinkEdge + 80 + 16 * pulse, layout.y - 35);
-            ctx.lineTo(pinkEdge + 69 + 16 * pulse, layout.y - 42);
-            ctx.moveTo(pinkEdge + 80 + 16 * pulse, layout.y - 35);
-            ctx.lineTo(pinkEdge + 69 + 16 * pulse, layout.y - 28);
-            ctx.stroke();
             ctx.restore();
         }
 
-        function drawEffect(now, progress = 1, alpha = 1) {
+        function drawEffect(now, progress = 1, alpha = 1, forcedPull = null) {
             const orientation = layer === 'adhesive' ? progress : 0;
-            const separation = layer === 'polymer' ? 0 : progress;
+            const separation = layer === 'barrier' ? progress : 0;
             const tilt = layer === 'polymer' ? Math.PI / 15 * progress : 0;
-            const layout = drawRibbon(orientation, separation, tilt);
+            const adhesion = layer === 'adhesive' && phase === 'effect' && forcedPull === null
+                ? adhesionTiming(now) : { pull: forcedPull || 0, arrows: 0 };
+            if (layer === 'adhesive') adhesionPull = adhesion.pull;
+            const layout = drawRibbon(orientation, separation, tilt, adhesion.pull);
             if (layer === 'polymer') drawWater(now, layout, alpha * ease((progress - .45) / .45));
             else if (layer === 'barrier') drawBarrier(now, layout, alpha * progress);
-            else drawAdhesion(now, layout, alpha * progress);
+            else drawAdhesion(layout, adhesion.pull, adhesion.arrows * alpha * progress);
         }
 
         function setPhase(next) {
             phase = next;
             phaseAt = performance.now();
             if (next === 'effect-in' && layer === 'polymer') waterStartedAt = phaseAt + 280;
+            if (next === 'effect' && layer === 'adhesive') adhesionStartedAt = phaseAt;
             section.dataset.layerScene = next;
             if (!frame) frame = requestAnimationFrame(tick);
         }
@@ -386,12 +469,15 @@
         }
 
         function exit() {
-            if (!phase || ['reverse', 'fade-out', 'water-out', 'effect-out'].includes(phase)) return;
+            if (!phase || ['reverse', 'fade-out', 'water-out', 'adhesion-release', 'effect-out'].includes(phase)) return;
             if (phase === 'enter') {
                 const duration = videos.forward.duration || 6.6;
                 beginReverse(Math.max(0, duration - videos.forward.currentTime));
             } else {
-                setPhase(layer === 'polymer' ? 'water-out' : 'effect-out');
+                if (layer === 'adhesive') {
+                    adhesionExitPull = adhesionPull;
+                    setPhase('adhesion-release');
+                } else setPhase(layer === 'polymer' ? 'water-out' : 'effect-out');
             }
         }
 
@@ -402,6 +488,7 @@
             phase = '';
             layer = '';
             lastLayout = null;
+            adhesionPull = 0;
             delete section.dataset.layerScene;
             if (frame) cancelAnimationFrame(frame);
             frame = 0;
@@ -433,9 +520,12 @@
             } else if (phase === 'water-out') {
                 drawEffect(now, 1, 1 - ease(elapsed / 300));
                 if (elapsed >= 300) setPhase('effect-out');
+            } else if (phase === 'adhesion-release') {
+                drawEffect(now, 1, 1, adhesionExitPull * (1 - ease(elapsed / 550)));
+                if (elapsed >= 550) setPhase('effect-out');
             } else if (phase === 'effect-out') {
                 const progress = 1 - ease(elapsed / 650);
-                drawEffect(now, progress, layer === 'polymer' ? 0 : Math.min(1, progress * 2));
+                drawEffect(now, progress, layer === 'polymer' ? 0 : Math.min(1, progress * 2), 0);
                 if (progress <= 0) beginReverse();
             } else if (phase === 'reverse') {
                 drawVideo(videos.reverse);
@@ -463,7 +553,8 @@
             const along = Math.cos(lastLayout.angle) * dx + Math.sin(lastLayout.angle) * dy;
             const across = -Math.sin(lastLayout.angle) * dx + Math.cos(lastLayout.angle) * dy;
             return Math.abs(along) <= lastLayout.length / 2 + 8
-                && Math.abs(across) <= lastLayout.total / 2 + 12;
+                && across >= -lastLayout.total / 2 - lastLayout.total * .56 * (lastLayout.peel || 0) - 12
+                && across <= lastLayout.total / 2 + 12;
         }
 
         return { start, exit, reset: () => stop(false), hitTest, get phase() { return phase; } };
