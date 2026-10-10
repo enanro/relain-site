@@ -134,91 +134,142 @@
             return layout;
         }
 
-        function droplet(x, y, w, h, opacity) {
+        function waterBead(x, baseY, w, h, opacity) {
+            if (opacity <= 0 || w <= 0) return;
             ctx.save();
             ctx.globalAlpha = opacity;
-            const body = ctx.createRadialGradient(x - w * .23, y - h * .25, 1, x, y, w * .72);
-            body.addColorStop(0, 'rgba(255,255,255,.75)');
-            body.addColorStop(.26, 'rgba(215,227,231,.24)');
-            body.addColorStop(.67, 'rgba(178,197,205,.09)');
-            body.addColorStop(1, 'rgba(235,244,244,.45)');
-            ctx.fillStyle = body;
+            const surface = ctx.createLinearGradient(x, baseY - h, x, baseY);
+            surface.addColorStop(0, 'rgba(11,10,10,.88)');
+            surface.addColorStop(.48, 'rgba(48,43,39,.75)');
+            surface.addColorStop(.78, 'rgba(174,166,158,.67)');
+            surface.addColorStop(1, 'rgba(251,250,247,.90)');
+            ctx.fillStyle = surface;
+            ctx.strokeStyle = 'rgba(248,247,243,.68)';
+            ctx.lineWidth = Math.max(.7, Math.min(1.4, w * .045));
             ctx.beginPath();
-            ctx.ellipse(x, y, w / 2, h / 2, 0, 0, Math.PI * 2);
+            ctx.moveTo(x - w / 2, baseY);
+            ctx.bezierCurveTo(x - w * .5, baseY - h * .54, x - w * .29, baseY - h, x, baseY - h);
+            ctx.bezierCurveTo(x + w * .29, baseY - h, x + w * .5, baseY - h * .54, x + w / 2, baseY);
+            ctx.quadraticCurveTo(x, baseY + Math.max(1, h * .09), x - w / 2, baseY);
             ctx.fill();
-            ctx.strokeStyle = 'rgba(243,249,248,.62)';
-            ctx.lineWidth = 1.1;
             ctx.stroke();
-            ctx.fillStyle = 'rgba(255,255,255,.75)';
+            ctx.strokeStyle = 'rgba(255,255,255,.94)';
+            ctx.lineWidth = Math.max(1, w * .075);
+            ctx.lineCap = 'round';
             ctx.beginPath();
-            ctx.ellipse(x - w * .18, y - h * .2, Math.max(1.5, w * .12), Math.max(1, h * .13), -.3, 0, Math.PI * 2);
+            ctx.moveTo(x - w * .27, baseY - h * .58);
+            ctx.quadraticCurveTo(x - w * .12, baseY - h * .92, x + w * .11, baseY - h * .83);
+            ctx.stroke();
+            if (w > 12) {
+                ctx.fillStyle = 'rgba(255,255,255,.76)';
+                ctx.beginPath();
+                ctx.ellipse(x + w * .24, baseY - h * .38, Math.max(1, w * .045), Math.max(1, h * .075), -.3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+
+        function waterRivulet(x, y, length, progress, opacity) {
+            if (progress <= 0 || opacity <= 0) return;
+            const reach = length * ease(progress);
+            const endX = x + reach * .62;
+            const endY = y + reach;
+            ctx.save();
+            ctx.globalAlpha = opacity;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = 'rgba(205,202,197,.28)';
+            ctx.lineWidth = 3.3;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.bezierCurveTo(x + reach * .04, y + reach * .31,
+                endX - reach * .18, endY - reach * .22, endX, endY);
+            ctx.stroke();
+            ctx.strokeStyle = 'rgba(252,250,245,.61)';
+            ctx.lineWidth = .85;
+            ctx.stroke();
+            const tip = ctx.createRadialGradient(endX - 2, endY - 3, 1, endX, endY, 8);
+            tip.addColorStop(0, 'rgba(255,255,255,.96)');
+            tip.addColorStop(.28, 'rgba(38,35,33,.82)');
+            tip.addColorStop(.75, 'rgba(147,144,139,.82)');
+            tip.addColorStop(1, 'rgba(248,247,244,.98)');
+            ctx.fillStyle = tip;
+            ctx.beginPath();
+            ctx.ellipse(endX, endY, 5, 8, -.2, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
         }
 
         function drawWater(now, layout, alpha) {
             if (!layout || alpha <= 0) return;
-            const cycle = (Math.max(0, now - waterStartedAt) / 6500) % 1;
-            if (cycle >= .87) return;
+            const cycle = (Math.max(0, now - waterStartedAt) / 5700) % 1;
+            if (cycle >= .85) return;
             const left = -layout.length / 2;
             const right = layout.length / 2;
             const blackTop = -layout.total / 2;
             const blackHeight = 85 * layout.scale;
-            const centers = [-.74, -.38, -.02, .36, .73].map(fraction => fraction * right);
+            const rim = blackTop + 1;
+            const drain = ease((cycle - .44) / .38);
             ctx.save();
             ctx.translate(layout.x, layout.y);
             ctx.rotate(layout.angle);
 
-            // Falling droplets stay above the same polymer surface until they land.
-            for (let i = 0; i < 36; i++) {
-                const begin = .015 + (i % 12) * .016;
-                const end = begin + .095;
-                if (cycle < begin || cycle >= end) continue;
-                const fall = ease((cycle - begin) / (end - begin));
-                const x = left + layout.length * (.08 + .84 * ((i * .381966) % 1));
-                const landingY = blackTop + blackHeight * (.25 + .3 * ((i * .273) % 1));
-                const y = landingY - (1 - fall) * (45 + (i % 4) * 12);
-                droplet(x, y, 4 + i % 4, 6 + i % 3, alpha * ease((cycle - begin) / .025));
+            for (let i = 0; i < 18; i++) {
+                const start = .008 + (i % 9) * .014;
+                if (cycle < start || cycle >= start + .085) continue;
+                const fall = ease((cycle - start) / .085);
+                const x = left + layout.length * (.07 + ((i * .618034) % 1) * .86);
+                const y = rim - (1 - fall) * (34 + i % 4 * 11);
+                waterBead(x, y, 3 + i % 3, 4 + i % 4, alpha * ease((cycle - start) / .018));
             }
 
-            ctx.beginPath();
-            ctx.rect(left, blackTop, layout.length, blackHeight);
-            ctx.clip();
-            const collect = ease((cycle - .17) / .28);
-            const drain = ease((cycle - .51) / .32);
+            // Beads collect along the top edge, merge, then glide down the slope to the right.
+            for (let i = 0; i < 28; i++) {
+                const born = .08 + (i % 11) * .018;
+                if (cycle < born) continue;
+                const seed = (i * .618034) % 1;
+                const startX = left + layout.length * (.045 + seed * .87);
+                const growth = ease((cycle - born) / .17);
+                const flow = ease((cycle - .4 - (i % 5) * .012) / .37);
+                const x = startX + (right + 38 - startX) * flow;
+                const size = (i % 7 === 0 ? 31 : i % 3 === 0 ? 18 : 5 + i % 5 * 2) * layout.scale * 2.15;
+                const w = Math.max(2, size * (.32 + growth * .68));
+                const h = Math.max(2, w * (i % 7 === 0 ? .72 : .55));
+                const tremble = Math.sin(now / 115 + i * 2.1) * .65 * (1 - drain);
+                waterBead(x, rim + tremble, w, h, alpha * growth * (1 - ease((flow - .91) / .09)));
+            }
 
-            // Small drops join five shallow puddles before the water rolls away.
-            for (let i = 0; i < 36; i++) {
-                const landing = .09 + (i % 12) * .016;
-                if (cycle < landing) continue;
-                const group = i % centers.length;
-                const initialX = left + layout.length * (.08 + .84 * ((i * .381966) % 1));
-                const baseX = initialX + (centers[group] - initialX) * collect * .8;
-                const edge = group % 2 ? left - 38 : right + 38;
-                const x = baseX + (edge - baseX) * drain;
-                const y = blackTop + blackHeight * (.3 + .16 * ((i * .273) % 1))
-                    + Math.sin(now / 120 + i) * 1.2 * collect * (1 - drain);
-                const size = 5 + i % 5 + collect * (4 + i % 3);
-                droplet(x, y, size, size * .55, alpha);
+            // A thin joined film follows the black coating, never a row of opaque circles.
+            const film = ease((cycle - .19) / .15) * (1 - ease((cycle - .52) / .24));
+            if (film > 0) {
+                const filmStart = left + layout.length * .18 + drain * layout.length * .65;
+                const filmEnd = Math.min(right, filmStart + layout.length * .42);
+                const glint = ctx.createLinearGradient(filmStart, rim, filmEnd, rim);
+                glint.addColorStop(0, 'rgba(255,255,255,0)');
+                glint.addColorStop(.3, `rgba(244,242,238,${.24 * alpha * film})`);
+                glint.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.strokeStyle = glint;
+                ctx.lineWidth = 2.4;
+                ctx.beginPath();
+                ctx.moveTo(filmStart, rim + 2);
+                ctx.quadraticCurveTo((filmStart + filmEnd) / 2, rim + 3, filmEnd, rim + 2);
+                ctx.stroke();
             }
-            if (cycle >= .2) {
-                centers.forEach((center, i) => {
-                    const edge = i % 2 ? left - 55 : right + 55;
-                    const x = center + (edge - center) * drain;
-                    const quiver = Math.sin(now / 95 + i * 2) * (1 - drain);
-                    const y = blackTop + blackHeight * (.48 + .05 * quiver);
-                    const size = (18 + i * 3) * (.55 + collect * .45) * (1 + .07 * quiver);
-                    if (drain > .08 && drain < 1) {
-                        ctx.strokeStyle = `rgba(223,238,238,${alpha * .24})`;
-                        ctx.lineWidth = Math.max(2, size * .16);
-                        ctx.beginPath();
-                        ctx.moveTo(x - Math.sign(edge - center) * Math.min(36, drain * 60), y);
-                        ctx.lineTo(x, y);
-                        ctx.stroke();
-                    }
-                    droplet(x, y, size, Math.max(6, size * .31), alpha * ease((cycle - .19) / .1));
-                });
-            }
+
+            // As in the reference, a few joined drops run down the face and leave its right edge.
+            const streams = [
+                { at: .29, start: .49, reach: .64 },
+                { at: .57, start: .53, reach: 1.05 },
+                { at: .78, start: .57, reach: .82 }
+            ];
+            streams.forEach(({ at, start, reach }) => {
+                const progress = ease((cycle - start) / .3);
+                const x = left + layout.length * at;
+                const visibility = alpha * ease((cycle - start) / .08)
+                    * (1 - ease((cycle - .78) / .08));
+                waterRivulet(x, rim + 3, layout.total * reach, progress, visibility);
+                waterBead(x, rim + 2, 12 * layout.scale * 2.15, 8 * layout.scale * 2.15,
+                    visibility * (1 - progress * .6));
+            });
             ctx.restore();
         }
 
