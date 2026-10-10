@@ -3,6 +3,9 @@
 
     const clamp = (n) => Math.max(0, Math.min(1, n));
     const ease = (n) => { const t = clamp(n); return t * t * (3 - 2 * t); };
+    const CIRCLE_TIME = 5.0; // The source footage is still a round end here.
+    const REVERSE_CIRCLE_TIME = 1.7;
+    const UNROLL_MS = 1450;
     const bands = [
         { name: 'polymer', top: 293, bottom: 378 },
         { name: 'barrier', top: 378, bottom: 416 },
@@ -13,10 +16,16 @@
     window.RelineOsptLayerScene = function ({ section, canvas, onFinished }) {
         const ctx = canvas.getContext('2d', { alpha: false });
         const videoSurface = document.createElement('canvas');
-        const videoContext = videoSurface.getContext('2d');
+        const videoContext = videoSurface.getContext('2d', { willReadFrequently: true });
         const strip = new Image();
         strip.decoding = 'async';
         strip.src = canvas.dataset.stripSrc;
+        const unrolledSurface = document.createElement('canvas');
+        unrolledSurface.width = 1672;
+        unrolledSurface.height = 661;
+        const unrolledContext = unrolledSurface.getContext('2d');
+        let material = strip;
+        let circleRadius = 160;
         const videos = {
             forward: document.createElement('video'),
             reverse: document.createElement('video')
@@ -40,8 +49,11 @@
         let adhesionPull = 0;
         let adhesionExitPull = 0;
         let lastLayout = null;
+        let rollFrom = 1;
+        let effectProgress = 0;
+        let effectExitFrom = 1;
 
-        const available = () => strip.complete && strip.naturalWidth > 0;
+        const available = () => material === unrolledSurface || (strip.complete && strip.naturalWidth > 0);
         function resize() {
             const rect = canvas.getBoundingClientRect();
             const nextRatio = Math.min(window.devicePixelRatio || 1, 2);
@@ -69,13 +81,33 @@
         function drawVideo(video) {
             backdrop();
             if (video.readyState < 2) return;
-            if (videoSurface.width !== video.videoWidth || videoSurface.height !== video.videoHeight) {
-                videoSurface.width = video.videoWidth;
-                videoSurface.height = video.videoHeight;
+            const scale = Math.min(width / video.videoWidth, height / video.videoHeight);
+            const w = video.videoWidth * scale;
+            const h = video.videoHeight * scale;
+            const sourceWidth = Math.max(1, Math.round(w));
+            const sourceHeight = Math.max(1, Math.round(h));
+            if (videoSurface.width !== sourceWidth || videoSurface.height !== sourceHeight) {
+                videoSurface.width = sourceWidth;
+                videoSurface.height = sourceHeight;
             }
             videoContext.globalCompositeOperation = 'source-over';
             videoContext.clearRect(0, 0, videoSurface.width, videoSurface.height);
-            videoContext.drawImage(video, 0, 0);
+            videoContext.drawImage(video, 0, 0, sourceWidth, sourceHeight);
+            // Keep only the pile: neutral metal and polymer. Warm footage
+            // background and its black letterbox reveal the scene backdrop.
+            const framePixels = videoContext.getImageData(0, 0, sourceWidth, sourceHeight);
+            const data = framePixels.data;
+            for (let i = 0; i < data.length; i += 4) {
+                const red = data[i];
+                const green = data[i + 1];
+                const blue = data[i + 2];
+                const light = Math.max(red, green, blue);
+                const warm = clamp((red - green - 5) / 9)
+                    * clamp((red - blue - 9) / 12);
+                const black = 1 - clamp((light - 18) / 14);
+                data[i + 3] = Math.round(255 * (1 - warm) * (1 - black));
+            }
+            videoContext.putImageData(framePixels, 0, 0);
             videoContext.globalCompositeOperation = 'destination-in';
             const verticalMask = videoContext.createLinearGradient(0, 0, 0, videoSurface.height);
             verticalMask.addColorStop(0, 'rgba(0,0,0,0)');
@@ -93,10 +125,123 @@
             videoContext.fillStyle = horizontalMask;
             videoContext.fillRect(0, 0, videoSurface.width, videoSurface.height);
             videoContext.globalCompositeOperation = 'source-over';
-            const scale = Math.min(width / video.videoWidth, height / video.videoHeight);
-            const w = video.videoWidth * scale;
-            const h = video.videoHeight * scale;
-            ctx.drawImage(videoSurface, (width - w) / 2, (height - h) / 2, w, h);
+            // The footage's opening frame is the same pile at a smaller
+            // camera scale. Match the existing third-screen silhouette first,
+            // then ease into the footage's own approach to the circular end.
+            const opening = video === videos.forward
+                ? 1 - ease(video.currentTime / 2)
+                : ease((video.currentTime - Math.max(0, (video.duration || 6.516) - 2)) / 2);
+            const zoom = 1 + .32 * opening;
+            const anchorX = width * .6;
+            const anchorY = height * .48;
+            const left = (width - w) / 2;
+            const top = (height - h) / 2;
+            ctx.drawImage(videoSurface, anchorX + (left - anchorX) * zoom,
+                anchorY + (top - anchorY) * zoom, w * zoom, h * zoom);
+        }
+
+        // Unwrap the actual circular end frame into a material map. The same
+        // pixels are used from the closed ring through the opened ribbon.
+        function captureCircularMaterial(video) {
+            if (video.readyState < 2) return false;
+            const source = document.createElement('canvas');
+            source.width = video.videoWidth;
+            source.height = video.videoHeight;
+            const sourceContext = source.getContext('2d', { willReadFrequently: true });
+            sourceContext.drawImage(video, 0, 0);
+            const pixels = sourceContext.getImageData(0, 0, source.width, source.height).data;
+            const output = unrolledContext.createImageData(1672, 661);
+            const centerX = source.width * (667 / 1344);
+            const centerY = source.height * (369 / 768);
+            const factor = source.width / 1344;
+            const radiusAt = theta => 1 / Math.hypot(Math.sin(theta) / (328 * factor), Math.cos(theta) / (309 * factor));
+            const edgeDepths = [2, 18, 37, 55, 101].map(value => value * factor);
+            const angles = Array.from({ length: 1672 }, (_, x) => {
+                const theta = -Math.PI / 2 + (x + .5) / 1672 * Math.PI * 2;
+                return [Math.sin(theta), Math.cos(theta), radiusAt(theta)];
+            });
+            for (let bandIndex = 0; bandIndex < bands.length; bandIndex++) {
+                const band = bands[bandIndex];
+                for (let y = band.top; y < band.bottom; y++) {
+                    const depth = (y - band.top) / (band.bottom - band.top);
+                    for (let x = 0; x < 1672; x++) {
+                        const [sine, cosine, outer] = angles[x];
+                        const radius = outer - edgeDepths[bandIndex]
+                            - (edgeDepths[bandIndex + 1] - edgeDepths[bandIndex]) * depth;
+                        const sx = Math.max(0, Math.min(source.width - 1, Math.round(centerX + radius * sine)));
+                        const sy = Math.max(0, Math.min(source.height - 1, Math.round(centerY - radius * cosine)));
+                        const from = (sy * source.width + sx) * 4;
+                        const to = (y * 1672 + x) * 4;
+                        output.data[to] = pixels[from];
+                        output.data[to + 1] = pixels[from + 1];
+                        output.data[to + 2] = pixels[from + 2];
+                        output.data[to + 3] = 255;
+                    }
+                }
+            }
+            unrolledContext.putImageData(output, 0, 0);
+            circleRadius = 318 * factor * Math.min(width / source.width, height / source.height);
+            return true;
+        }
+
+        // Open the ring at one seam. Its sweep decreases from a full circle
+        // to zero while each textured band follows the same curved surface.
+        function drawUnroll(progress) {
+            backdrop();
+            if (!available()) return;
+            const p = ease(progress);
+            const target = ribbonLayout(layer === 'adhesive' ? 1 : 0);
+            const q = 1 - p;
+            const sweep = Math.PI * 2 * Math.max(.0001, q);
+            const length = Math.PI * 2 * circleRadius * q + target.length * p;
+            const radius = length / sweep;
+            const midAngle = Math.PI / 2 * q;
+            const flatten = 1 - q * q;
+            const finalDepths = bands.map(band => (band.bottom - band.top) * target.scale);
+            const initialDepths = [7.5, 9.5, 9.5, 22].map(value => value * circleRadius / 160);
+            const depths = finalDepths.map((value, i) => initialDepths[i] * q + value * p);
+            const total = depths.reduce((sum, value) => sum + value, 0);
+            const baseOffset = -target.total / 2 * p;
+            const textureBlend = strip.complete && strip.naturalWidth > 0 ? ease((p - .1) / .7) : 0;
+            const count = 240;
+            const piece = length / count;
+            ctx.save();
+            ctx.translate(width * .5 + (target.x - width * .5) * p, height * .5);
+            ctx.rotate(layer === 'adhesive' ? Math.PI / 2 * p : 0);
+            if (p < .28) {
+                const hole = ctx.createRadialGradient(0, 0, circleRadius - total - 20, 0, 0, circleRadius - 4);
+                hole.addColorStop(0, `rgba(0,0,0,${1 - ease(p / .28)})`);
+                hole.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = hole;
+                ctx.beginPath();
+                ctx.arc(0, 0, circleRadius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            for (let i = 0; i < count; i++) {
+                const u = (i + .5) / count;
+                const theta = (u - .5) * sweep + midAngle;
+                const x = radius * (Math.sin(theta) - flatten * Math.sin(midAngle));
+                const y = -radius * (Math.cos(theta) - flatten * Math.cos(midAngle));
+                let depth = baseOffset;
+                for (let j = 0; j < bands.length; j++) {
+                    const band = bands[j];
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.rotate(theta);
+                    ctx.drawImage(unrolledSurface, i * 1672 / count, band.top, 1672 / count, band.bottom - band.top,
+                        -piece / 2 - .45, depth, piece + .9, depths[j] + .35);
+                    if (textureBlend > 0) {
+                        ctx.globalAlpha = textureBlend;
+                        ctx.drawImage(strip, i * 1672 / count, band.top, 1672 / count, band.bottom - band.top,
+                            -piece / 2 - .45, depth, piece + .9, depths[j] + .35);
+                        ctx.globalAlpha = 1;
+                    }
+                    ctx.restore();
+                    depth += depths[j];
+                }
+            }
+            ctx.restore();
+            if (p >= .999) lastLayout = target;
         }
 
         function ribbonLayout(orientation) {
@@ -243,7 +388,7 @@
                     for (let i = first; i < count; i++) {
                         const u = (i + .5) / count;
                         const shift = layout.total * .56 * peel * peelProfile(u);
-                        ctx.drawImage(strip, i * sourceWidth, band.top, sourceWidth, band.bottom - band.top,
+                        ctx.drawImage(material, i * sourceWidth, band.top, sourceWidth, band.bottom - band.top,
                             -layout.length / 2 + i * pieceWidth, y - shift, pieceWidth + .45, bandHeight + .65);
                     }
                     const capU = (first + .5) / count;
@@ -259,7 +404,7 @@
                 }
                 let offset = 0;
                 if (layer === 'barrier' && band.name === 'polymer') offset = -height * .32 * ease(separation);
-                ctx.drawImage(strip, 0, band.top, 1672, band.bottom - band.top,
+                ctx.drawImage(material, 0, band.top, 1672, band.bottom - band.top,
                     -layout.length / 2, y + offset, layout.length, bandHeight + .7);
             };
             if (layer === 'adhesive' && orientation >= .999 && peel > .001) {
@@ -489,7 +634,7 @@
         }
 
         function drawEffect(now, progress = 1, alpha = 1, forcedPull = null) {
-            const orientation = layer === 'adhesive' ? progress : 0;
+            const orientation = layer === 'adhesive' ? 1 : 0;
             const separation = layer === 'barrier' ? progress : 0;
             const tilt = layer === 'polymer' ? Math.PI / 15 * progress : 0;
             const adhesion = layer === 'adhesive' && phase === 'effect' && forcedPull === null
@@ -523,6 +668,7 @@
         function start(nextLayer) {
             if (!ctx || phase) return false;
             layer = nextLayer;
+            material = strip;
             setPhase('enter');
             play(videos.forward);
             return true;
@@ -535,10 +681,16 @@
         }
 
         function exit() {
-            if (!phase || ['reverse', 'fade-out', 'water-out', 'adhesion-release', 'effect-out'].includes(phase)) return;
+            if (!phase || ['reverse', 'fade-out', 'water-out', 'adhesion-release', 'effect-out', 'reroll'].includes(phase)) return;
             if (phase === 'enter') {
                 const duration = videos.forward.duration || 6.6;
                 beginReverse(Math.max(0, duration - videos.forward.currentTime));
+            } else if (phase === 'unroll') {
+                rollFrom = clamp((performance.now() - phaseAt) / UNROLL_MS);
+                setPhase('reroll');
+            } else if (phase === 'effect-in') {
+                effectExitFrom = effectProgress;
+                setPhase('effect-out');
             } else {
                 if (layer === 'adhesive') {
                     adhesionExitPull = adhesionPull;
@@ -553,8 +705,11 @@
             canvas.style.opacity = '';
             phase = '';
             layer = '';
+            material = strip;
             lastLayout = null;
             adhesionPull = 0;
+            effectProgress = 0;
+            effectExitFrom = 1;
             delete section.dataset.layerScene;
             if (frame) cancelAnimationFrame(frame);
             frame = 0;
@@ -569,16 +724,18 @@
             const elapsed = now - phaseAt;
             if (phase === 'enter') {
                 drawVideo(videos.forward);
-                if (videos.forward.ended) setPhase('blend');
-            } else if (phase === 'blend') {
-                drawVideo(videos.forward);
-                ctx.save();
-                ctx.globalAlpha = ease(elapsed / 420);
-                drawRibbon(0, 0);
-                ctx.restore();
-                if (elapsed >= 420) setPhase('effect-in');
+                if (videos.forward.currentTime >= CIRCLE_TIME && captureCircularMaterial(videos.forward)) {
+                    videos.forward.pause();
+                    setPhase('unroll');
+                    drawUnroll(0);
+                }
+            } else if (phase === 'unroll') {
+                const progress = clamp(elapsed / UNROLL_MS);
+                drawUnroll(progress);
+                if (progress >= 1) setPhase('effect-in');
             } else if (phase === 'effect-in') {
                 const progress = ease(elapsed / (layer === 'adhesive' ? 750 : 650));
+                effectProgress = progress;
                 drawEffect(now, progress, progress);
                 if (progress >= 1) setPhase('effect');
             } else if (phase === 'effect') {
@@ -590,9 +747,17 @@
                 drawEffect(now, 1, 1, adhesionExitPull * (1 - ease(elapsed / 550)));
                 if (elapsed >= 550) setPhase('effect-out');
             } else if (phase === 'effect-out') {
-                const progress = 1 - ease(elapsed / 650);
+                const progress = effectExitFrom * (1 - ease(elapsed / Math.max(1, 650 * effectExitFrom)));
                 drawEffect(now, progress, layer === 'polymer' ? 0 : Math.min(1, progress * 2), 0);
-                if (progress <= 0) beginReverse();
+                if (progress <= 0) {
+                    rollFrom = 1;
+                    effectExitFrom = 1;
+                    setPhase('reroll');
+                }
+            } else if (phase === 'reroll') {
+                const progress = rollFrom * (1 - clamp(elapsed / (UNROLL_MS * rollFrom)));
+                drawUnroll(progress);
+                if (progress <= 0) beginReverse(REVERSE_CIRCLE_TIME);
             } else if (phase === 'reverse') {
                 drawVideo(videos.reverse);
                 if (videos.reverse.ended) setPhase('fade-out');
