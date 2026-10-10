@@ -11,14 +11,22 @@
     ];
 
     window.RelineOsptLayerScene = function ({ section, canvas, onFinished }) {
-        const ctx = canvas.getContext('2d', { alpha: true });
-        const model = section.querySelector('.ospt-compare__model');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        const videoSurface = document.createElement('canvas');
+        const videoContext = videoSurface.getContext('2d');
         const strip = new Image();
         strip.decoding = 'async';
         strip.src = canvas.dataset.stripSrc;
-        const endcap = new Image();
-        endcap.decoding = 'async';
-        endcap.src = canvas.dataset.endSrc;
+        const videos = {
+            forward: document.createElement('video'),
+            reverse: document.createElement('video')
+        };
+        Object.entries(videos).forEach(([direction, video]) => {
+            video.src = canvas.dataset[`${direction}Src`];
+            video.preload = 'auto';
+            video.muted = true;
+            video.playsInline = true;
+        });
         let phase = '';
         let layer = '';
         let phaseAt = 0;
@@ -26,13 +34,7 @@
         let width = 0;
         let height = 0;
         let ratio = 1;
-        let transitionProgress = 0;
-        let transitionDirection = 1;
-        let transitionAt = 0;
-        let modelTransform = '';
-        let transitionFrom = 0;
-        let fragment = null;
-        let heldGlow = null;
+        let fromForwardAt = 0;
         let waterStartedAt = 0;
         let adhesionStartedAt = 0;
         let adhesionPull = 0;
@@ -54,92 +56,47 @@
         }
 
         function backdrop() {
-            // The third screen owns the backdrop and its orange glow.
-            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, width, height);
+            const glow = ctx.createRadialGradient(width * .37, height * .5, 16, width * .37, height * .5, width * .7);
+            glow.addColorStop(0, '#3b1909');
+            glow.addColorStop(.42, '#1b0b04');
+            glow.addColorStop(1, '#000');
+            ctx.fillStyle = glow;
+            ctx.fillRect(0, 0, width, height);
         }
 
-        function drawEndcap(face, alpha = 1, unroll = 0) {
-            if (!endcap.complete || !endcap.naturalWidth || face <= 0 || alpha <= 0) return;
-            const radius = Math.min(width * .35, height * .27) * (1 - .8 * unroll);
-            const x = width * (.14 + .36 * face - .42 * unroll);
-            const y = height * .5;
-            ctx.save();
-            ctx.globalAlpha = alpha;
-            ctx.translate(x, y);
-            ctx.scale(Math.max(.001, face), 1);
-            ctx.beginPath();
-            ctx.arc(0, 0, radius, 0, Math.PI * 2);
-            ctx.clip();
-            ctx.drawImage(endcap, 152, 128, 950, 950,
-                -radius, -radius, radius * 2, radius * 2);
-            ctx.restore();
-        }
-
-        function makeFragment() {
-            const image = model.querySelector('.ospt-compare__pile--coated');
-            fragment = document.createElement('div');
-            fragment.setAttribute('aria-hidden', 'true');
-            fragment.style.cssText = 'position:absolute;z-index:3;pointer-events:none;opacity:0;overflow:visible;';
-            fragment.style.top = `${model.offsetTop}px`;
-            fragment.style.left = `${model.offsetLeft}px`;
-            fragment.style.width = `${model.offsetWidth}px`;
-            fragment.style.height = `${model.offsetHeight}px`;
-            fragment.style.transformOrigin = getComputedStyle(model).transformOrigin;
-            fragment.style.clipPath = 'inset(0 0 78% 0)';
-            const piece = document.createElement('img');
-            piece.src = image.currentSrc || image.src;
-            piece.alt = '';
-            piece.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform:scale(.82);';
-            fragment.append(piece);
-            canvas.parentElement.insertBefore(fragment, canvas);
-        }
-
-        function holdOriginalGlow() {
-            const glow = model.querySelector('.ospt-compare__glow');
-            const style = getComputedStyle(glow);
-            heldGlow = document.createElement('div');
-            heldGlow.setAttribute('aria-hidden', 'true');
-            heldGlow.style.cssText = 'position:absolute;z-index:2;pointer-events:none;';
-            heldGlow.style.top = `${model.offsetTop}px`;
-            heldGlow.style.left = `${model.offsetLeft}px`;
-            heldGlow.style.width = `${model.offsetWidth}px`;
-            heldGlow.style.height = `${model.offsetHeight}px`;
-            heldGlow.style.transformOrigin = getComputedStyle(model).transformOrigin;
-            heldGlow.style.transform = modelTransform;
-            const image = document.createElement('img');
-            image.src = glow.currentSrc || glow.src;
-            image.alt = '';
-            image.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:contain;';
-            image.style.opacity = style.opacity;
-            image.style.filter = style.filter;
-            image.style.transform = style.transform;
-            heldGlow.append(image);
-            canvas.parentElement.insertBefore(heldGlow, canvas);
-        }
-
-        function drawTransition(progress) {
+        function drawVideo(video) {
             backdrop();
-            const fracture = ease((progress - .16) / .13);
-            const turn = ease((progress - .29) / .35);
-            const unroll = ease((progress - .64) / .36);
-            const movement = ` rotateY(${(90 * turn).toFixed(3)}deg) scale(${(1 + .18 * turn).toFixed(4)})`;
-            model.style.transform = modelTransform + movement;
-            model.style.clipPath = fracture > .001 ? `inset(${(22 * fracture + 8 * turn).toFixed(3)}% 0 0 0)` : '';
-            model.style.opacity = String(1 - ease((progress - .56) / .11));
-            if (fragment) {
-                fragment.style.transform = modelTransform + ` translate(${(-45 * fracture).toFixed(2)}px, ${(90 * fracture).toFixed(2)}px) rotateZ(${(-14 * fracture).toFixed(2)}deg)`;
-                fragment.style.opacity = String(fracture * (1 - ease((progress - .31) / .15)));
+            if (video.readyState < 2) return;
+            if (videoSurface.width !== video.videoWidth || videoSurface.height !== video.videoHeight) {
+                videoSurface.width = video.videoWidth;
+                videoSurface.height = video.videoHeight;
             }
-            if (turn > 0 && unroll < 1) drawEndcap(turn, 1 - ease(unroll), unroll);
-            if (unroll > 0 && available()) {
-                ctx.save();
-                const reveal = ease(unroll);
-                ctx.beginPath();
-                ctx.rect(width * .82 * (1 - reveal), 0, width, height);
-                ctx.clip();
-                drawRibbon(0, 0, 0, 0, false);
-                ctx.restore();
-            }
+            videoContext.globalCompositeOperation = 'source-over';
+            videoContext.clearRect(0, 0, videoSurface.width, videoSurface.height);
+            videoContext.drawImage(video, 0, 0);
+            videoContext.globalCompositeOperation = 'destination-in';
+            const verticalMask = videoContext.createLinearGradient(0, 0, 0, videoSurface.height);
+            verticalMask.addColorStop(0, 'rgba(0,0,0,0)');
+            verticalMask.addColorStop(.12, 'rgba(0,0,0,1)');
+            verticalMask.addColorStop(.76, 'rgba(0,0,0,1)');
+            verticalMask.addColorStop(.88, 'rgba(0,0,0,0)');
+            verticalMask.addColorStop(1, 'rgba(0,0,0,0)');
+            videoContext.fillStyle = verticalMask;
+            videoContext.fillRect(0, 0, videoSurface.width, videoSurface.height);
+            const horizontalMask = videoContext.createLinearGradient(0, 0, videoSurface.width, 0);
+            horizontalMask.addColorStop(0, 'rgba(0,0,0,0)');
+            horizontalMask.addColorStop(.08, 'rgba(0,0,0,1)');
+            horizontalMask.addColorStop(.92, 'rgba(0,0,0,1)');
+            horizontalMask.addColorStop(1, 'rgba(0,0,0,0)');
+            videoContext.fillStyle = horizontalMask;
+            videoContext.fillRect(0, 0, videoSurface.width, videoSurface.height);
+            videoContext.globalCompositeOperation = 'source-over';
+            const scale = Math.min(width / video.videoWidth, height / video.videoHeight);
+            const w = video.videoWidth * scale;
+            const h = video.videoHeight * scale;
+            ctx.drawImage(videoSurface, (width - w) / 2, (height - h) / 2, w, h);
         }
 
         function ribbonLayout(orientation) {
@@ -264,8 +221,8 @@
             ctx.restore();
         }
 
-        function drawRibbon(orientation = 0, separation = 0, tilt = 0, peel = 0, clear = true) {
-            if (clear) backdrop();
+        function drawRibbon(orientation = 0, separation = 0, tilt = 0, peel = 0) {
+            backdrop();
             if (!available()) return null;
             const layout = ribbonLayout(orientation);
             layout.angle += tilt;
@@ -553,31 +510,35 @@
             if (!frame) frame = requestAnimationFrame(tick);
         }
 
+        function play(video, start = 0) {
+            video.pause();
+            const begin = () => {
+                video.currentTime = Math.min(start, Math.max(0, (video.duration || 6.6) - .05));
+                video.play().catch(() => stop(true));
+            };
+            if (video.readyState >= 2) begin();
+            else video.addEventListener('loadeddata', begin, { once: true });
+        }
+
         function start(nextLayer) {
             if (!ctx || phase) return false;
             layer = nextLayer;
-            modelTransform = getComputedStyle(model).transform;
-            holdOriginalGlow();
-            makeFragment();
-            transitionProgress = 0;
-            transitionFrom = 0;
-            transitionDirection = 1;
             setPhase('enter');
-            transitionAt = phaseAt;
+            play(videos.forward);
             return true;
         }
 
-        function beginReverse() {
-            transitionFrom = transitionProgress;
-            transitionDirection = -1;
+        function beginReverse(start = 0) {
+            videos.forward.pause();
             setPhase('reverse');
-            transitionAt = phaseAt;
+            play(videos.reverse, start);
         }
 
         function exit() {
-            if (!phase || ['reverse', 'water-out', 'adhesion-release', 'effect-out'].includes(phase)) return;
+            if (!phase || ['reverse', 'fade-out', 'water-out', 'adhesion-release', 'effect-out'].includes(phase)) return;
             if (phase === 'enter') {
-                beginReverse();
+                const duration = videos.forward.duration || 6.6;
+                beginReverse(Math.max(0, duration - videos.forward.currentTime));
             } else {
                 if (layer === 'adhesive') {
                     adhesionExitPull = adhesionPull;
@@ -587,14 +548,9 @@
         }
 
         function stop(notify = false) {
+            videos.forward.pause();
+            videos.reverse.pause();
             canvas.style.opacity = '';
-            model.style.transform = '';
-            model.style.clipPath = '';
-            model.style.opacity = '';
-            if (fragment) fragment.remove();
-            fragment = null;
-            if (heldGlow) heldGlow.remove();
-            heldGlow = null;
             phase = '';
             layer = '';
             lastLayout = null;
@@ -611,14 +567,16 @@
             if (!phase) return;
             resize();
             const elapsed = now - phaseAt;
-            if (phase === 'enter' || phase === 'reverse') {
-                transitionProgress = clamp(transitionFrom + transitionDirection * elapsed / 3400);
-                drawTransition(transitionProgress);
-                if (transitionDirection > 0 && transitionProgress >= 1) setPhase('effect-in');
-                else if (transitionDirection < 0 && transitionProgress <= 0) {
-                    stop(true);
-                    return;
-                }
+            if (phase === 'enter') {
+                drawVideo(videos.forward);
+                if (videos.forward.ended) setPhase('blend');
+            } else if (phase === 'blend') {
+                drawVideo(videos.forward);
+                ctx.save();
+                ctx.globalAlpha = ease(elapsed / 420);
+                drawRibbon(0, 0);
+                ctx.restore();
+                if (elapsed >= 420) setPhase('effect-in');
             } else if (phase === 'effect-in') {
                 const progress = ease(elapsed / (layer === 'adhesive' ? 750 : 650));
                 drawEffect(now, progress, progress);
@@ -635,6 +593,17 @@
                 const progress = 1 - ease(elapsed / 650);
                 drawEffect(now, progress, layer === 'polymer' ? 0 : Math.min(1, progress * 2), 0);
                 if (progress <= 0) beginReverse();
+            } else if (phase === 'reverse') {
+                drawVideo(videos.reverse);
+                if (videos.reverse.ended) setPhase('fade-out');
+            } else if (phase === 'fade-out') {
+                drawVideo(videos.reverse);
+                canvas.style.opacity = String(1 - ease(elapsed / 260));
+                if (elapsed >= 260) {
+                    canvas.style.opacity = '';
+                    stop(true);
+                    return;
+                }
             }
             if (phase && !frame) frame = requestAnimationFrame(tick);
         }

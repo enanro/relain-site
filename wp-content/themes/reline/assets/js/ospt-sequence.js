@@ -116,8 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedLayer = layer;
         previewLayer = '';
         returnFocus = trigger?.tagName === 'BUTTON' ? trigger : section.querySelector(`.ospt-compare__layer-choice[data-layer-target="${layer}"]`);
-        if (!section.classList.contains('is-linear')) scene.start(layer);
         syncLayerInteraction();
+        if (!section.classList.contains('is-linear')) scene.start(layer);
         if (keyboard) detailBack.focus({ preventScroll: true });
     }
 
