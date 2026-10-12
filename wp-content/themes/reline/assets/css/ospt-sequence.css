@@ -91,8 +91,13 @@ body.page-template-template-ospt {
     text-shadow: 0 2px 8px #000;
 }
 .ospt-compare__callout[data-layer-target] {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    max-width: 205px;
     border: 0;
-    padding: 2px 0;
+    padding: 3px 2px;
     background: transparent;
     color: #eef0f1;
     font: inherit;
@@ -100,6 +105,42 @@ body.page-template-template-ospt {
     font-weight: 700;
     text-align: left;
     cursor: pointer;
+}
+.ospt-compare__callout-label { max-width: 156px; }
+.ospt-compare__callout--polymer { --lens-color: #202930; --lens-ring: #aeb9c0; --lens-fill: #dce2e5; }
+.ospt-compare__callout--barrier { --lens-color: #e77ba7; --lens-ring: #e77ba7; --lens-fill: rgba(18, 5, 13, .82); }
+.ospt-compare__callout--adhesive { --lens-color: #b186ca; --lens-ring: #b186ca; --lens-fill: rgba(13, 7, 19, .82); }
+.ospt-compare__magnifier {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 27px;
+    height: 27px;
+    border: 1px solid var(--lens-ring);
+    border-radius: 50%;
+    background: var(--lens-fill);
+    color: var(--lens-color);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, .25);
+    transform-origin: center;
+}
+.ospt-compare__magnifier svg {
+    display: block;
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+}
+.ospt-compare__callout[data-layer-target]:is(:hover, :focus-visible) .ospt-compare__magnifier,
+.ospt-compare[data-active-layer="polymer"] .ospt-compare__callout--polymer .ospt-compare__magnifier,
+.ospt-compare[data-active-layer="barrier"] .ospt-compare__callout--barrier .ospt-compare__magnifier,
+.ospt-compare[data-active-layer="adhesive"] .ospt-compare__callout--adhesive .ospt-compare__magnifier {
+    animation: ospt-magnifier-pulse 1.35s ease-in-out infinite;
+}
+@keyframes ospt-magnifier-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
 }
 .ospt-compare.is-sequenced[data-active-screen="layers"] .ospt-compare__callout[data-layer-target] { pointer-events: auto; }
 .ospt-compare__callout[data-layer-target]:hover,
@@ -110,28 +151,29 @@ body.page-template-template-ospt {
 .ospt-compare__callout[data-layer-target]:focus-visible,
 .ospt-compare__layer-choice:focus-visible,
 .ospt-compare__detail-back:focus-visible { outline: 2px solid #f77913; outline-offset: 5px; }
-.ospt-compare__callout::after {
-    content: '';
+.ospt-compare__callout--polymer { top: 7%; left: 22%; }
+.ospt-compare__callout--barrier { bottom: 6%; left: 48%; }
+.ospt-compare__callout--adhesive { top: 12%; left: 60%; }
+.ospt-compare__callout--steel { bottom: 6%; left: 80%; }
+.ospt-compare__leaders {
     position: absolute;
-    top: calc(100% + 7px);
-    left: var(--leader-x, 45%);
-    width: 1px;
-    height: var(--leader-length, 82px);
-    background: linear-gradient(#f77913, rgba(255, 255, 255, .42));
-    transform-origin: top;
-    transform: rotate(var(--leader-angle, 0deg));
+    z-index: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
 }
-.ospt-compare__callout--polymer { top: 7%; left: 22%; --leader-length: 190px; --leader-angle: -15deg; }
-.ospt-compare__callout--barrier { bottom: 6%; left: 48%; --leader-x: 70%; --leader-length: 220px; --leader-angle: 7deg; }
-.ospt-compare__callout--adhesive { top: 12%; left: 60%; --leader-length: 190px; --leader-angle: -12deg; }
-.ospt-compare__callout--steel { bottom: 6%; left: 80%; --leader-length: 220px; --leader-angle: 7deg; }
-.ospt-compare__callout--barrier::after,
-.ospt-compare__callout--steel::after {
-    top: auto;
-    bottom: calc(100% + 7px);
-    background: linear-gradient(to top, #f77913, rgba(255, 255, 255, .42));
-    transform-origin: bottom;
+.ospt-compare__leaders line {
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    opacity: .78;
 }
+.ospt-compare__leaders [data-leader="polymer"] { stroke: #aeb9c0; }
+.ospt-compare__leaders [data-leader="barrier"] { stroke: #e77ba7; }
+.ospt-compare__leaders [data-leader="adhesive"] { stroke: #b186ca; }
+.ospt-compare__leaders [data-leader="steel"] { stroke: #aab3b9; }
 .ospt-compare__layers-copy { opacity: 0; }
 .ospt-compare__layers-lead {
     margin: 20px 0 28px;
@@ -620,6 +662,7 @@ body.page-template-template-ospt {
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .ospt-compare__magnifier { animation: none !important; }
     .ospt-compare__polymer-window,
     .ospt-compare__barrier-window,
     .ospt-compare__barrier-body,

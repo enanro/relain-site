@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalCopy = section.querySelector('.ospt-compare__final-copy');
     const layersCopy = section.querySelector('.ospt-compare__layers-copy');
     const cutaway = section.querySelector('.ospt-compare__cutaway');
+    const leaders = cutaway.querySelector('.ospt-compare__leaders');
     const barrierWindow = section.querySelector('.ospt-compare__barrier-window');
     const adhesiveWindow = section.querySelector('.ospt-compare__adhesive-window');
     const layerAxis = section.querySelector('.ospt-compare__layer-axis');
@@ -105,6 +106,35 @@ document.addEventListener('DOMContentLoaded', () => {
         layerList.setAttribute('aria-hidden', String(Boolean(selectedLayer)));
         layerDetail.inert = !selectedLayer;
         layerDetail.setAttribute('aria-hidden', String(!selectedLayer));
+        const calloutsAvailable = section.dataset.activeScreen === 'layers' && !selectedLayer && !activeAnimation();
+        cutaway.inert = !calloutsAvailable;
+        cutaway.setAttribute('aria-hidden', String(!calloutsAvailable));
+    }
+
+    function updateCalloutLeaders() {
+        if (section.classList.contains('is-linear') || section.dataset.activeScreen !== 'layers') return;
+        const matrix = layerAxis.getScreenCTM();
+        if (!matrix) return;
+        const bounds = cutaway.getBoundingClientRect();
+        leaders.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
+        const targets = {
+            polymer: { x: -150, y: -49 },
+            barrier: { x: 68, y: 41 },
+            adhesive: { x: 192, y: -37 },
+            steel: { x: 323, y: 30 }
+        };
+        Object.entries(targets).forEach(([layer, point]) => {
+            const callout = cutaway.querySelector(`.ospt-compare__callout--${layer}`);
+            const label = callout.querySelector('.ospt-compare__callout-label') || callout;
+            const line = leaders.querySelector(`[data-leader="${layer}"]`);
+            const labelBox = label.getBoundingClientRect();
+            const target = new DOMPoint(point.x, point.y).matrixTransform(matrix);
+            const startsBelow = layer === 'polymer' || layer === 'adhesive';
+            line.setAttribute('x1', (labelBox.left + labelBox.width / 2 - bounds.left).toFixed(1));
+            line.setAttribute('y1', ((startsBelow ? labelBox.bottom + 7 : labelBox.top - 7) - bounds.top).toFixed(1));
+            line.setAttribute('x2', (target.x - bounds.left).toFixed(1));
+            line.setAttribute('y2', (target.y - bounds.top).toFixed(1));
+        });
     }
 
     function clearLayer(event) {
@@ -250,8 +280,8 @@ document.addEventListener('DOMContentLoaded', () => {
         groundCopy.setAttribute('aria-hidden', String(activeScreen !== 'ground'));
         finalCopy.setAttribute('aria-hidden', String(activeScreen !== 'middle'));
         layersCopy.setAttribute('aria-hidden', String(activeScreen !== 'layers'));
-        cutaway.setAttribute('aria-hidden', String(activeScreen !== 'layers'));
-        cutaway.inert = activeScreen !== 'layers';
+        cutaway.setAttribute('aria-hidden', String(activeScreen !== 'layers' || Boolean(selectedLayer)));
+        cutaway.inert = activeScreen !== 'layers' || Boolean(selectedLayer);
         model.setAttribute('aria-hidden', String(Boolean(scene.phase)));
         groundCopy.inert = activeScreen !== 'ground';
         finalCopy.inert = activeScreen !== 'middle';
@@ -265,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? 'Удлинённая металлическая свая без оболочки на чёрном фоне'
                 : 'Укороченная металлическая свая с оболочкой ОСПТ «Релайн» на чёрном фоне')
             : 'Металлическая свая с оболочкой ОСПТ «Релайн» в двух слоях грунта под модульным зданием');
+        updateCalloutLeaders();
     }
 
     function schedule() {
@@ -299,6 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule, { passive: true });
+    document.fonts?.ready.then(schedule);
     linearQuery.addEventListener('change', configure);
     new MutationObserver(schedule).observe(section, { attributes: true, attributeFilter: ['data-state'] });
     configure();
