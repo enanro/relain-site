@@ -5,9 +5,9 @@
 .ospt-static p{line-height:1.6}
 .ospt-static__lead{color:#f3a266!important;font-size:clamp(20px,2vw,29px);font-weight:700;line-height:1.28!important}
 .ospt-static--overview{background:#070a0e}
-.ospt-static__overview-frame{position:relative;width:100%;aspect-ratio:1672/841;min-height:600px;overflow:hidden}
+.ospt-static__overview-frame{position:relative;width:100%;aspect-ratio:1672/841;min-height:0;overflow:hidden}
 .ospt-static__overview-image{position:absolute;top:-11.9%;left:0;display:block;width:100%;height:auto;max-width:none}
-.ospt-static__overview-card{position:absolute;z-index:1;top:7.3%;bottom:8%;left:2.35%;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;width:30%;padding:clamp(24px,2.5vw,45px);border:1px solid rgba(255,255,255,.23);border-radius:21px;background:#090c0f}
+.ospt-static__overview-card{position:absolute;z-index:1;top:4%;bottom:8%;left:2.35%;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;width:30%;padding:clamp(24px,2.5vw,45px);border:1px solid rgba(255,255,255,.23);border-radius:21px;background:#090c0f}
 .ospt-static__overview-card h2{font-size:clamp(32px,3.5vw,62px)}
 .ospt-static__overview-card p:not(.ospt-static__eyebrow){margin:0 0 27px;color:#d6d9dc;font-size:clamp(14px,1.2vw,19px)}
 .ospt-static__overview-card .btn{margin-top:auto}
