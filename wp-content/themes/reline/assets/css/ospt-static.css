@@ -203,3 +203,14 @@ html:has(.ospt-static){scroll-behavior:auto!important}
 
 .ospt-static__pile-visual{overflow:hidden}
 .ospt-static__pile-visual img{pointer-events:none}
+
+/* Fixed comparison stage: the images cannot determine the section height. */
+.ospt-static__pile-visual{display:block;position:relative;height:clamp(620px,54vw,930px);min-height:0;align-self:center;padding:0;overflow:hidden}
+.ospt-static__pile-visual img{position:absolute;top:50%;left:50%;width:84%;height:82%;max-width:none;max-height:none;object-fit:contain;transform:translate(-50%,-50%)}
+.ospt-static__pile-visual .ospt-static__pile-bare{width:94%;height:98%;max-width:none;max-height:none;transform:translate(-50%,-50%) scaleX(-1)}
+.ospt-static--layers .ospt-static__layers-diagram{position:relative;display:flex;align-items:center;background-image:radial-gradient(ellipse at 50% 50%,#d36713 0%,#803807 26%,#301405 49%,#0a0705 72%,#030303 95%);background-size:100% 100%;background-position:center}
+.ospt-static__layers-diagram svg{display:block;width:100%;height:auto}
+.ospt-static__layer-pointers{color:#f3a266}
+.ospt-static__layer-labels{font:600 22px 'Manrope',Arial,sans-serif}
+@media(max-width:1200px){.ospt-static--layers .ospt-static__layers-diagram{height:auto;aspect-ratio:1000/900;max-height:none;min-height:0}}
+@media(max-width:700px){.ospt-static__pile-visual{height:clamp(420px,125vw,680px);padding:0}}

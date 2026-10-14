@@ -55,7 +55,7 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 <meta name="generator" content="WordPress 7.1.2" />
 <link rel="canonical" href="https://enanro.github.io/relain-site/ospt-reline-static/" />
 <link rel='shortlink' href='https://enanro.github.io/relain-site/?p=5' />
-<link rel='stylesheet' id='reline-ospt-static-css' href='../wp-content/themes/reline/assets/css/ospt-static.css?ver=20261014a' media='all' />
+<link rel='stylesheet' id='reline-ospt-static-css' href='../wp-content/themes/reline/assets/css/ospt-static.css?ver=20261014b' media='all' />
 </head>
 
 <body class="wp-singular page-template page-template-templates page-template-template-ospt page-template-templatestemplate-ospt-php page page-id-5 wp-theme-reline">
@@ -140,7 +140,14 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
   <div class="ospt-static__overview-frame">
     <div class="ospt-static__overview-artwork" role="img" aria-label="Промышленная площадка: сваи с оранжевой оболочкой, железная дорога, ЛЭП, блокбокс и трубопровод">
       <svg viewBox="540 100 1132 841" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <g id="overview-plus"><circle r="23" fill="#f3731b"/><path d="M-8 0H8M0-8V8" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></g>
+        </defs>
         <image href="../wp-content/themes/reline/assets/img/ospt-static/overview-orange.png" width="1672" height="941" />
+        <use href="#overview-plus" x="667" y="278"/>
+        <use href="#overview-plus" x="1277" y="353"/>
+        <use href="#overview-plus" x="1425" y="632"/>
+        <use href="#overview-plus" x="789" y="670"/>
       </svg>
     </div>
     <div class="ospt-static__overview-content">
@@ -186,7 +193,6 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
       <li><strong>До 1,5 раза</strong> — Сокращение длины свай за счёт снижения касательных сил морозного пучения.</li>
       <li><strong>До 3 раз</strong> — Сокращение времени монтажа за счет снижения объемов работ.</li>
       <li><strong>50+ лет</strong> — Долговечность покрытия свайного фундамента.</li>
-      <li>Защита от коррозии</li>
     </ul>
   </div>
   <div class="ospt-static__pile-visual" aria-live="polite">
@@ -195,7 +201,23 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
   </div>
 </section>
 <section class="ospt-static ospt-static--layers ospt-static--feature" id="static-layers" aria-labelledby="static-layers-title">
-  <div class="ospt-static__feature-visual" role="img" aria-label="Разрез сваи: оранжевое полимерное покрытие, фиолетовый барьерный слой, полупрозрачный желтоватый адгезионный слой и стальная основа"></div>
+  <div class="ospt-static__feature-visual ospt-static__layers-diagram" role="img" aria-label="Слои оболочки сваи: оранжевое полимерное покрытие, фиолетовая барьерная зона и нежно-жёлтый адгезионный подслой">
+    <svg viewBox="0 0 1000 900" aria-hidden="true">
+      <defs><g id="layer-magnifier" fill="none" stroke="currentColor" stroke-width="2"><circle r="21"/><circle cx="-2" cy="-2" r="6"/><path d="M2 2L8 8" stroke-linecap="round"/></g></defs>
+      <image href="../wp-content/themes/reline/assets/img/ospt-static/layers-pile-hq.png" x="40" y="230" width="920" height="440" preserveAspectRatio="xMidYMid meet"/>
+      <g class="ospt-static__layer-pointers" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M190 178L510 432"/><circle cx="510" cy="432" r="3" fill="currentColor"/>
+        <path d="M680 208L744 520"/><circle cx="744" cy="520" r="3" fill="currentColor"/>
+        <path d="M510 747L700 540"/><circle cx="700" cy="540" r="3" fill="currentColor"/>
+      </g>
+      <g class="ospt-static__layer-labels" fill="#fff">
+        <text x="70" y="153">Полимерное покрытие</text>
+        <text x="565" y="180">Адгезионный подслой</text>
+        <text x="350" y="787">Барьерная функция</text>
+      </g>
+      <g class="ospt-static__layer-pointers"><use href="#layer-magnifier" x="340" y="146"/><use href="#layer-magnifier" x="835" y="173"/><use href="#layer-magnifier" x="605" y="780"/></g>
+    </svg>
+  </div>
   <div class="ospt-static__feature-copy">
     <p class="ospt-static__eyebrow">ОСПТ «Релайн» / Конструкция покрытия</p>
     <h2 id="static-layers-title">Как устроена оболочка ОСПТ «Релайн»</h2>
@@ -232,7 +254,7 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     <p class="ospt-static__eyebrow">ОСПТ «Релайн» / Конструкция покрытия</p>
     <h2 id="static-adhesive-title">Адгезионный слой — прочное сцепление со сваей</h2>
     <p class="ospt-static__feature-lead">Удерживает полимерную оболочку на металле</p>
-    <div class="ospt-static__feature-detail"><p>Адгезионный подслой связывает оболочку ОСПТ «Релайн» с подготовленной поверхностью сваи. Прочное сцепление помогает покрытию сопротивляться сдвигу при воздействии пучинистого грунта. Качество подготовки поверхности и монтажа влияет на надёжность соединения.</p><a href="#static-layers">← Все слои</a></div>
+    <div class="ospt-static__feature-detail"><p>Адгезионный подслой связывает оболочку ОСПТ «Релайн» с подготовленной поверхностью сваи. Прочное сцепление помогает покрытию сопротивляться сдвигу при воздействии пучинистого грунта.</p><a href="#static-layers">← Все слои</a></div>
   </div>
 </section>
 <section class="ospt-benefits section-light" id="ospt-benefits">
@@ -581,3 +603,5 @@ var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof H
 </body>
 
 </html>
+
+
