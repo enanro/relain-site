@@ -194,3 +194,12 @@ html:has(.ospt-static){scroll-behavior:auto!important}
   .ospt-static--overview .ospt-static__overview-proof{grid-template-columns:minmax(0,1fr)}
   .ospt-static--overview .ospt-static__overview-proof>div{min-height:0;padding:16px;font-size:15px}
 }
+
+/* Approved copy: flexible sections and positive list markers. */
+.ospt-static__metrics li::before{content:"•"}
+.ospt-static__ground-copy,.ospt-static__pile-copy,.ospt-static__feature-copy{flex-shrink:0}
+.ospt-static__feature-copy h2{overflow-wrap:break-word}
+.ospt-static__feature-detail>p:first-child{margin-top:0}
+
+.ospt-static__pile-visual{overflow:hidden}
+.ospt-static__pile-visual img{pointer-events:none}
