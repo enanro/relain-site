@@ -226,3 +226,8 @@ html:has(.ospt-static){scroll-behavior:auto!important}
 .ospt-static__layer-labels{font:600 22px 'Manrope',Arial,sans-serif}
 @media(max-width:1200px){.ospt-static--layers .ospt-static__layers-diagram{height:auto;aspect-ratio:1000/900;max-height:none;min-height:0}}
 @media(max-width:700px){.ospt-static__pile-visual{height:clamp(420px,125vw,680px);padding:0}}
+
+/* Full-width panorama; object markers keep image-relative coordinates. */
+.ospt-static--overview .ospt-static__overview-frame{display:block;grid-template-columns:none;min-height:0;aspect-ratio:auto;overflow:hidden}
+.ospt-static--overview .ospt-static__overview-artwork{display:block;width:100%;aspect-ratio:auto;min-height:0}
+.ospt-static--overview .ospt-static__overview-picture{width:100%;aspect-ratio:1584/1024}
