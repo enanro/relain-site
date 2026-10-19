@@ -37,3 +37,5 @@
 .detail-product{display:inline-flex;margin-top:26px;padding:14px 22px;border:1px solid #f3731b;border-radius:8px;color:#fff;font-size:14px;font-weight:700;text-decoration:none}
 .detail-product:hover{background:#f3731b}
 .detail-product:focus-visible{outline:2px solid #fff;outline-offset:4px}
+
+@media(min-width:1701px){.lep-copy::before{position:absolute;z-index:-1;inset:-28px -28px;content:"";background:radial-gradient(ellipse at center,rgb(5 6 8 / 88%) 0%,rgb(5 6 8 / 64%) 55%,transparent 74%);pointer-events:none}}
