@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru-RU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>ЛЭП на свайных фундаментах — ОСПТ «Релайн»</title>
+  <link rel="stylesheet" href="../../wp-content/themes/reline/assets/css/fonts.css?ver=1.0.5">
+  <style>
+    *{box-sizing:border-box}
+    html,body{min-height:100%;margin:0;background:#050608;color:#f7f7f8}
+    body{font-family:Manrope,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    .lep-stage{position:relative;display:flex;align-items:center;min-height:100svh;overflow:hidden;background:#050608}
+    .lep-visual{position:absolute;inset:0;margin:0;overflow:hidden;pointer-events:none}
+    .lep-visual img{position:absolute;top:50%;left:0;display:block;width:min(100vw,150svh);height:100%;max-width:none;object-fit:contain;object-position:left center;transform:translateY(-50%)}
+    .lep-copy{position:relative;z-index:1;width:min(440px,36vw);margin:0 clamp(36px,5vw,110px) 0 auto;padding:48px 0}
+    .lep-back{display:inline-flex;align-items:center;gap:10px;margin:0 0 clamp(56px,10vh,120px);color:#f3a266;font-size:14px;font-weight:700;text-decoration:none;transition:color .18s ease}
+    .lep-back:hover{color:#fff}
+    .lep-back:focus-visible{outline:2px solid #f3731b;outline-offset:5px}
+    .lep-eyebrow{margin:0 0 22px;color:#b5b9bf;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+    .lep-copy h1{margin:0 0 24px;color:#fff;font-family:'Bebas Neue',Impact,sans-serif;font-size:clamp(54px,5vw,86px);font-weight:700;line-height:.92;text-transform:uppercase;text-wrap:balance}
+    .lep-lead{margin:0 0 18px;color:#f3a266;font-size:clamp(19px,1.7vw,25px);font-weight:700;line-height:1.3}
+    .lep-description{max-width:420px;margin:0;color:#d6d9dc;font-size:clamp(16px,1.15vw,18px);line-height:1.65}
+    @media(max-width:1700px){
+      .lep-stage{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;min-height:100svh}
+      .lep-visual{position:relative;inset:auto;width:100%;height:auto;aspect-ratio:3/2;flex:none}
+      .lep-visual img{inset:0;width:100%;height:100%;object-fit:contain;object-position:center;transform:none}
+      .lep-copy{width:min(680px,100%);margin:0 auto;padding:28px clamp(24px,6vw,64px) 54px}
+      .lep-back{margin-bottom:38px}
+      .lep-copy h1{font-size:clamp(54px,8vw,76px)}
+    }
+    @media(max-width:600px){
+      .lep-visual{aspect-ratio:1.22}
+      .lep-visual img{object-fit:cover;object-position:31% center}
+      .lep-copy{padding:24px 24px 42px}
+      .lep-back{margin-bottom:30px;font-size:13px}
+      .lep-eyebrow{margin-bottom:16px}
+      .lep-copy h1{margin-bottom:18px;font-size:54px}
+      .lep-lead{font-size:20px}
+    }
+    @media(prefers-reduced-motion:reduce){.lep-back{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="lep-stage">
+    <figure class="lep-visual">
+      <img src="../../wp-content/themes/reline/assets/img/ospt-static/overview-lep-foundation.png" alt="Металлическая опора ЛЭП на сваях с тёмной полимерной оболочкой в зоне промерзания; показаны пучинистый верхний слой и стабильный вечномёрзлый грунт" width="1536" height="1024" fetchpriority="high">
+    </figure>
+    <section class="lep-copy" aria-labelledby="lep-title">
+      <a class="lep-back" href="../#static-overview"><span aria-hidden="true">←</span> Назад к общей панораме</a>
+      <p class="lep-eyebrow">ОСПТ «Релайн» / Электроэнергетика</p>
+      <h1 id="lep-title">ЛЭП на свайных фундаментах</h1>
+      <p class="lep-lead">Защита опор от морозного пучения</p>
+      <p class="lep-description">Оболочка ОСПТ «Reline» защищает сваи от морозного пучения и коррозии.</p>
+    </section>
+  </main>
+</body>
+</html>
