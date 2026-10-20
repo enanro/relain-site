@@ -39,3 +39,11 @@
 .detail-product:focus-visible{outline:2px solid #fff;outline-offset:4px}
 
 @media(min-width:1701px){.lep-copy::before{position:absolute;z-index:-1;inset:-28px -28px;content:"";background:radial-gradient(ellipse at center,rgb(5 6 8 / 88%) 0%,rgb(5 6 8 / 64%) 55%,transparent 74%);pointer-events:none}}
+
+/* Keep the selected marine berth image at the same camera anchor as the other objects. */
+.lep-visual--marine .registered-scene{left:29.6vw;transform-origin:0 0;transform:translate(-58.6%,-50%) scale(1,var(--scene-scale-y,1))}
+@media(max-width:1700px){.lep-visual--marine .registered-scene{inset:auto;top:50%;right:auto;bottom:auto;left:29.6vw;width:100%;height:100%;max-height:none;transform:translate(-58.6%,-50%) scale(1,var(--scene-scale-y,1))}}
+@media(min-width:1701px){.lep-copy--ground{width:min(520px,43vw)}}
+@media(max-width:1700px){.lep-copy--ground{width:min(680px,100%)}}
+.lep-copy--ground .lep-description{max-width:520px}
+.lep-copy--ground .lep-ground-metrics{max-width:520px;margin-top:16px}
