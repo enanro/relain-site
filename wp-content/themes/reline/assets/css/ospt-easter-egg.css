@@ -1,0 +1,9 @@
+.ospt-easter-reader{position:absolute;z-index:2;left:var(--reader-x);top:var(--reader-y);width:1.8%;aspect-ratio:1;transform:translate(-50%,-80%);pointer-events:none}
+.ospt-easter-reader__figure{display:block;width:100%;height:100%;object-fit:contain}
+.ospt-easter-reader__newspaper{position:absolute;z-index:1;left:56.46%;top:24.88%;width:24.5%;height:22.5%;display:block;border-radius:1px;pointer-events:auto;cursor:pointer;text-decoration:none}
+.ospt-easter-reader__paper{position:absolute;left:-230.4489796%;top:-110.5777778%;width:408.1632653%;height:444.4444444%;background:url('../img/ospt-static/easter-reader.webp') center/100% 100% no-repeat;clip-path:polygon(62.52% 24.88%,73.13% 31.02%,80.94% 33.81%,73.6% 46.25%,69.62% 47.29%,56.46% 40.75%);transform-origin:68.7% 36.1%;transition:transform .24s ease,filter .24s ease;pointer-events:none}
+.ospt-easter-reader__newspaper:focus-visible{outline:2px solid #f3731b;outline-offset:3px}
+.ospt-easter-reader__newspaper:focus-visible .ospt-easter-reader__paper{transform:translateY(-.4%) scale(1.12);filter:drop-shadow(0 .5px .7px rgb(0 0 0 / 35%))}
+@media(hover:hover) and (pointer:fine){.ospt-easter-reader__newspaper:hover .ospt-easter-reader__paper{transform:translateY(-.4%) scale(1.12);filter:drop-shadow(0 .5px .7px rgb(0 0 0 / 35%))}}
+@media(pointer:coarse){.ospt-easter-reader__newspaper::after{position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%);content:""}}
+@media(prefers-reduced-motion:reduce){.ospt-easter-reader__paper{transition:none}.ospt-easter-reader__newspaper:is(:hover,:focus-visible) .ospt-easter-reader__paper{transform:none}}
